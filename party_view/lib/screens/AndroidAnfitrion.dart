@@ -15,51 +15,32 @@ class _AndroidState extends State<Android> {
   void initState() {
     super.initState();
 
-    // #docregion webview_controller
+    //Controlador de la vista de el navegador
     controller =
         WebViewController()
           ..setJavaScriptMode(JavaScriptMode.unrestricted)
-          ..setNavigationDelegate(
-            NavigationDelegate(
-              onProgress: (int progress) {
-                // Update loading bar.
-              },
-              onPageStarted: (String url) {},
-              onPageFinished: (String url) {},
-              onHttpError: (HttpResponseError error) {},
-              onWebResourceError: (WebResourceError error) {},
-              onNavigationRequest: (NavigationRequest request) {
-                if (request.url.startsWith('https://www.youtube.com/')) {
-                  return NavigationDecision.prevent;
-                }
-                return NavigationDecision.navigate;
-              },
-            ),
-          )
-          ..loadRequest(
-            Uri.parse('https://www.youtube.com/watch?v=HEu0KXHH4DU&t=1009s'),
-          );
-    // #enddocregion webview_controller
+          ..loadRequest(Uri.parse('https://www.google.com'));
   }
 
-  // #docregion webview_widget
+  //Contructor vista
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Anfitrión"),
-        actions: <Widget>[NavigationControls(webViewController: controller)],
+        actions: <Widget>[
+          ControlNavegacion(webViewController: controller),
+          MenuOpciones(webViewController: controller),
+        ],
       ),
       body: WebViewWidget(controller: controller),
     );
   }
-
-  // #enddocregion webview_widget
 }
 
 //Botón de navegación
-class NavigationControls extends StatelessWidget {
-  const NavigationControls({super.key, required this.webViewController});
+class ControlNavegacion extends StatelessWidget {
+  const ControlNavegacion({super.key, required this.webViewController});
 
   final WebViewController webViewController;
 
@@ -101,5 +82,189 @@ class NavigationControls extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+enum OpcionMenu {
+  netflix,
+  max,
+  amazon,
+  disney,
+  youtube,
+  twitch,
+  kick,
+  google,
+  limpiarCookiesCache,
+}
+
+class MenuOpciones extends StatefulWidget {
+  const MenuOpciones({super.key, required this.webViewController});
+
+  final WebViewController webViewController;
+
+  @override
+  _MenuOpcionesState createState() => _MenuOpcionesState();
+}
+
+class _MenuOpcionesState extends State<MenuOpciones> {
+  late final WebViewCookieManager cookieManager = WebViewCookieManager();
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton<OpcionMenu>(
+      key: const ValueKey<String>("Opciones Men"),
+      onSelected: (OpcionMenu value) {
+        switch (value) {
+          case OpcionMenu.netflix:
+            _loadUrl("https://www.netflix.com");
+            break;
+          case OpcionMenu.max:
+            _loadUrl("https://www.hbomax.com");
+            break;
+          case OpcionMenu.amazon:
+            _loadUrl(
+              "https://www.primevideo.com/-/es/offers/nonprimehomepage/ref=dv_web_force_root?language=es",
+            );
+            break;
+          case OpcionMenu.disney:
+            _loadUrl("https://www.disneyplus.com");
+            break;
+          case OpcionMenu.youtube:
+            _loadUrl("https://www.youtube.com");
+            break;
+          case OpcionMenu.twitch:
+            _loadUrl("https://www.twitch.tv");
+            break;
+          case OpcionMenu.kick:
+            _loadUrl("https://www.kick.com");
+            break;
+          case OpcionMenu.google:
+            _loadUrl("https://www.google.com");
+            break;
+          case OpcionMenu.limpiarCookiesCache:
+            _limpiarCookies();
+            break;
+        }
+      },
+      itemBuilder:
+          (BuildContext context) => <PopupMenuEntry<OpcionMenu>>[
+            PopupMenuItem<OpcionMenu>(
+              value: OpcionMenu.netflix,
+              child: Row(
+                children: [
+                  Image.asset(
+                    "assets/iconMenu/netflix.png",
+                    width: 30,
+                    height: 30,
+                  ),
+                  Text("Netflix"),
+                ],
+              ),
+            ),
+            PopupMenuItem<OpcionMenu>(
+              value: OpcionMenu.max,
+              child: Row(
+                children: [
+                  Image.asset("assets/iconMenu/max.png", width: 30, height: 30),
+                  Text(" Max"),
+                ],
+              ),
+            ),
+            PopupMenuItem<OpcionMenu>(
+              value: OpcionMenu.amazon,
+              child: Row(
+                children: [
+                  Image.asset(
+                    "assets/iconMenu/amazon.png",
+                    width: 30,
+                    height: 30,
+                  ),
+                  Text(" Prime Video"),
+                ],
+              ),
+            ),
+            PopupMenuItem<OpcionMenu>(
+              value: OpcionMenu.disney,
+              child: Row(
+                children: [
+                  Image.asset(
+                    "assets/iconMenu/disney.png",
+                    width: 30,
+                    height: 30,
+                  ),
+                  Text(" Disney+"),
+                ],
+              ),
+            ),
+            PopupMenuItem<OpcionMenu>(
+              value: OpcionMenu.youtube,
+              child: Row(
+                children: [
+                  Image.asset(
+                    "assets/iconMenu/youtube.png",
+                    width: 30,
+                    height: 30,
+                  ),
+                  Text(" YouTube"),
+                ],
+              ),
+            ),
+            PopupMenuItem<OpcionMenu>(
+              value: OpcionMenu.twitch,
+              child: Row(
+                children: [
+                  Image.asset(
+                    "assets/iconMenu/twitch.png",
+                    width: 30,
+                    height: 30,
+                  ),
+                  Text(" Twitch"),
+                ],
+              ),
+            ),
+            PopupMenuItem<OpcionMenu>(
+              value: OpcionMenu.kick,
+              child: Row(
+                children: [
+                  Image.asset(
+                    "assets/iconMenu/kick.png",
+                    width: 30,
+                    height: 30,
+                  ),
+                  Text(" Kick"),
+                ],
+              ),
+            ),
+            PopupMenuItem<OpcionMenu>(
+              value: OpcionMenu.google,
+              child: Row(
+                children: [
+                  Image.asset(
+                    "assets/iconMenu/google.png",
+                    width: 30,
+                    height: 30,
+                  ),
+                  Text(" Google"),
+                ],
+              ),
+            ),
+            const PopupMenuItem<OpcionMenu>(
+              value: OpcionMenu.limpiarCookiesCache,
+              child: Row(
+                children: [Icon(Icons.cookie), Text(" Limpiar Cookies")],
+              ),
+            ),
+          ],
+    );
+  }
+
+  void _loadUrl(String url) {
+    widget.webViewController.loadRequest(Uri.parse(url));
+  }
+
+  void _limpiarCookies() {
+    widget.webViewController.clearCache();
+    widget.webViewController.clearLocalStorage();
+    cookieManager.clearCookies();
   }
 }
