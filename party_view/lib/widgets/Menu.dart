@@ -98,7 +98,9 @@ class Menu extends StatelessWidget {
       position: PullDownMenuPosition.automatic,
       buttonBuilder:
           (context, onPressed) => IconButton(
-            icon: const Icon(Icons.keyboard_double_arrow_left),
+            icon: const Icon(Icons.adjust_sharp),
+            iconSize: 30,
+
             onPressed: onPressed,
           ),
     );
