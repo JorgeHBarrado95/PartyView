@@ -1,0 +1,28 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Party View DEBUG",
+            "request": "launch",
+            "type": "dart",
+            "description": "Para hacer pruebas en modo debug",
+        },
+        {
+            "name": "Party View (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "description": "Para medir el rendimiento de la aplicacion",
+        },
+        {
+            "name": "Party View (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "description": "Es el resultado final",
+        }
+    ]
+}
