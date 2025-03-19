@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:party_view/models/Anfitrion.dart';
-import 'package:party_view/models/Invitado.dart';
+
 import 'package:party_view/models/Sala.dart';
 import 'package:party_view/services/GestorSalasService.dart';
 import 'package:party_view/widget/CustomListView.dart';
@@ -39,30 +38,14 @@ class _PrincipalState extends State<Principal> {
           }
         },
       ),
-
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          // Crear una nueva salaS
-          Sala nuevaSala = Sala(
-            id: "0",
-            capacidad: 5,
-            video: true,
-            estado: "abierto",
-            anfitrion: Anfitrion(nombre: "Juan", ip: "555"),
-            invitados: [Invitado(nombre: "a", ip: "dd")],
-          );
-
-          try {
-            await GestorSalasService().addSala(nuevaSala);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Sala agregada exitosamente")),
-            );
-          } catch (e) {
-            print(e);
-          }
+        onPressed: () {
+          Navigator.pushNamed(context, "/cineAnfitrion");
         },
         child: Icon(Icons.add),
       ),
+
+      
     );
   }
 }
