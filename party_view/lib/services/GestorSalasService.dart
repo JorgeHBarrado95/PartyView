@@ -6,11 +6,12 @@ import 'package:party_view/models/Sala.dart';
 
 class GestorSalasService {
   final String url =
-      "https://partyview-8ba30-default-rtdb.europe-west1.firebasedatabase.app/Salas.json";
+      "https://partyview-8ba30-default-rtdb.europe-west1.firebasedatabase.app/Salas";
 
   Future<void> addSala(Sala sala) async {
-    final url = Uri.parse(this.url);
-    final response = await http.post(
+    String idSala = await idSalaComp();
+    final url = Uri.parse("${this.url}/${idSala}.json");
+    final response = await http.put(
       url,
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(sala.toJson()),
@@ -21,17 +22,29 @@ class GestorSalasService {
     }
   }
 
-  Future<void> idSalaComp() async {
-    //Genera un id rand pa la sala y comprueba q existe
+  //Genera un id rand pa la sala y comprueba q existe
+  Future<String> idSalaComp() async {
     final random = Random();
-    int randId = random.nextInt(100000);
-    String randIdString = randId.toString();
+    while (true) {
+      int randId = random.nextInt(100000);
+      //print(randId);
+      String randIdString = randId.toString();
+
+      final url2 = Uri.parse("${this.url}/${randIdString}.json");
+
+      final response = await http.get(url2);
+
+      //print(response.body);
+      if (response.body == "null") {
+        return randIdString;
+      }
+    }
   }
 
   Future<List<Sala>> getSalas() async {
     final url = Uri.parse(this.url);
-    //final response = await http.get(Uri.parse("${url}.json"));
-    final response = await http.get(url);
+    final response = await http.get(Uri.parse("${url}.json"));
+    //final response = await http.get(url);
 
     if (response.statusCode != 200) {
       throw Exception('Fallo al obtener salas: ${response.body}');
