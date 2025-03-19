@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:http/http.dart' as http;
 import 'package:party_view/models/Sala.dart';
@@ -20,8 +21,16 @@ class GestorSalasService {
     }
   }
 
+  Future<void> idSalaComp() async {
+    //Genera un id rand pa la sala y comprueba q existe
+    final random = Random();
+    int randId = random.nextInt(100000);
+    String randIdString = randId.toString();
+  }
+
   Future<List<Sala>> getSalas() async {
     final url = Uri.parse(this.url);
+    //final response = await http.get(Uri.parse("${url}.json"));
     final response = await http.get(url);
 
     if (response.statusCode != 200) {
