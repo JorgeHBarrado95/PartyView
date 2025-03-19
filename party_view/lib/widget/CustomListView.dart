@@ -22,7 +22,7 @@ class CustomListView extends StatelessWidget {
                   leading: CircleAvatar(
                     child: Text(sala.anfitrion.nombre[0]),
                   ), // Primera letra del nombre del anfitrión
-                  title: Text("Sala:  ${sala.invitados}"),
+                  title: Text("Sala: #${sala.id}"),
                   subtitle: Text(
                     "Capacidad max: ${sala.capacidad}, Estado: ${sala.estado}",
                   ),

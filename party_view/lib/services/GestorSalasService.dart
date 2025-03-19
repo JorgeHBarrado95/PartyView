@@ -10,6 +10,7 @@ class GestorSalasService {
 
   Future<void> addSala(Sala sala) async {
     String idSala = await idSalaComp();
+    sala.id = idSala;
     final url = Uri.parse("${this.url}/${idSala}.json");
     final response = await http.put(
       url,
@@ -28,7 +29,8 @@ class GestorSalasService {
     while (true) {
       int randId = random.nextInt(100000);
       //print(randId);
-      String randIdString = randId.toString();
+
+      String randIdString = randId.toString().padLeft(5, "0"); //Se añaden 0 para q simpre sean 5 digitos
 
       final url2 = Uri.parse("${this.url}/${randIdString}.json");
 

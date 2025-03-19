@@ -30,8 +30,10 @@ class _PrincipalState extends State<Principal> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
+          } else if (!snapshot.hasData) {
+            return Center(child: Text("No hay salas disponibles"));
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error al cargar las salas'));
+            return Center(child: Text("Error al cargar las salas"));
           } else {
             return CustomListView(salas: snapshot.data!);
           }
@@ -42,18 +44,18 @@ class _PrincipalState extends State<Principal> {
         onPressed: () async {
           // Crear una nueva salaS
           Sala nuevaSala = Sala(
-
+            id: "0",
             capacidad: 5,
             video: true,
-            estado: 'abierto',
-            anfitrion: Anfitrion(nombre: 'Juan', ip: '555'),
-            invitados: [Invitado(nombre: 'a', ip: 'dd')],
+            estado: "abierto",
+            anfitrion: Anfitrion(nombre: "Juan", ip: "555"),
+            invitados: [Invitado(nombre: "a", ip: "dd")],
           );
 
           try {
             await GestorSalasService().addSala(nuevaSala);
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Sala agregada exitosamente')),
+              SnackBar(content: Text("Sala agregada exitosamente")),
             );
           } catch (e) {
             print(e);

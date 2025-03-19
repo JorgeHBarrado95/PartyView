@@ -2,6 +2,7 @@ import 'package:party_view/models/Anfitrion.dart';
 import 'package:party_view/models/Invitado.dart';
 
 class Sala {
+  late String id;
   late String estado;
   late num capacidad;
   late bool video;
@@ -9,6 +10,7 @@ class Sala {
   late List<Invitado> invitados;
 
   Sala({
+    required this.id,
     required this.capacidad,
     required this.video,
     required this.estado,
@@ -18,6 +20,7 @@ class Sala {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'capacidad': capacidad,
       'video': video,
       'estado': estado,
@@ -28,6 +31,7 @@ class Sala {
 
   factory Sala.fromJson(String id, Map<String, dynamic> json) {
     return Sala(
+      id: id,
       capacidad: json['capacidad'],
       video: json['video'] is bool ? json['video'] : json['video'] == 'true',
       estado: json['estado'],
