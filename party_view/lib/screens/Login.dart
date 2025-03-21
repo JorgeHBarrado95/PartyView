@@ -111,7 +111,16 @@ class _LoginState extends State<Login> {
       );
 
       try {
-        await Loginservice().registro(usuario);
+        int estadoRegistro = await Loginservice().registro(usuario);
+
+        if (estadoRegistro == 0) {
+          Navigator.pushNamed(context, "/principal");
+          print("Registro exitoso");
+        } else if (estadoRegistro == 3) {
+          print("El correo ya está en uso");
+        } else {
+          print("Error desconocido");
+        }
       } catch (e) {
         print(e);
       }
@@ -164,7 +173,15 @@ class _LoginState extends State<Login> {
     );
 
     try {
-      await Loginservice().login(usuario);
+      int estadoLogin = await Loginservice().login(usuario);
+
+      if (estadoLogin == 0) {
+        Navigator.pushNamed(context, "/principal");
+      } else if (estadoLogin == 1) {
+        print("Error en la contraseña o @");
+      } else {
+        print("Error desconocido");
+      }
     } catch (e) {
       print(e);
     }

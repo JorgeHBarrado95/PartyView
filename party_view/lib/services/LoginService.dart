@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:http/http.dart' as http;
 import 'package:party_view/models/Usuario.dart';
+import 'package:party_view/services/AuthService.dart';
 
 class Loginservice {
   final urlRegister = Uri.parse(
@@ -16,7 +18,11 @@ class Loginservice {
     "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyCR6r9ZgSdyXUYWmQOzATl2MQYW8EASsoE",
   );
 
-  Future<void> registro(Usuario usuario) async {
+  final urlNombre = Uri.parse(
+    "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyCR6r9ZgSdyXUYWmQOzATl2MQYW8EASsoE",
+  );
+
+  Future<int> registro(Usuario usuario) async {
     final response = await http.post(
       urlRegister,
       headers: {'Content-Type': 'application/json'},
@@ -27,33 +33,37 @@ class Loginservice {
       }),
     );
     if (response.statusCode == 200) {
-      print("Registro ok");
+      //Registro ok
+      //Actualizar el displayName
+      final response2 = await http.post(
+        urlUpdate,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          "idToken": jsonDecode(response.body)["idToken"],
+          "displayName": usuario.displayName,
+          "returnSecureToken": true,
+        }),
+      );
+
+      if (response2.statusCode == 200) {
+        await Authservice().saveToken(jsonDecode(response.body)["idToken"]);
+        await Authservice().saveDisplayName(usuario.displayName!);
+        //Registro ok
+        return 0;
+      } else {
+        //Error desconocido
+        return 2;
+      }
+    } else if (response.statusCode == 400) {
+      //El @ ya esta en uso
+      return 3;
     } else {
-      print("Error en el registro");
+      //Error desconocido
+      return 2;
     }
-    //print(response.body);
-
-    //Actualizar el displayName
-    final response2 = await http.post(
-      urlUpdate,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        "idToken": jsonDecode(response.body)["idToken"],
-        "displayName": usuario.displayName,
-        "returnSecureToken": true,
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      print("Registro del nombre ok");
-    } else {
-      print("Error en el registro");
-    }
-
-    //print(response2.body);
   }
 
-  Future<void> login(Usuario usuario) async {
+  Future<int> login(Usuario usuario) async {
     final response = await http.post(
       urlLogin,
       headers: {'Content-Type': 'application/json'},
@@ -63,13 +73,19 @@ class Loginservice {
         "returnSecureToken": true,
       }),
     );
-    print("------------------");
     if (response.statusCode == 400) {
-      print("Error en la contraseña");
+      //Error en la contraseña o @
+      return 1;
     } else if (response.statusCode == 200) {
-      print("Usuario logeado");
+      //Login ok
+      await Authservice().saveDisplayName(
+        jsonDecode(response.body)["displayName"],
+      );
+
+      return 0;
     } else {
-      print("Error desconocido");
+      //Error desconocido
+      return 2;
     }
   }
 }
