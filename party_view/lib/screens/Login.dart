@@ -45,11 +45,13 @@ class _LoginState extends State<Login> {
                 child: Text("Iniciar sesión", style: TextStyle(fontSize: 20)),
               ),
               const SizedBox(height: 15),
+
               TextField(
                 decoration: InputDecoration(labelText: "Correo"),
                 controller: _correoController,
               ),
               const SizedBox(height: 15),
+
               TextField(
                 decoration: InputDecoration(labelText: "Nombre de usuario"),
                 controller: _nombreController,
@@ -85,22 +87,10 @@ class _LoginState extends State<Login> {
                   ),
                   const SizedBox(width: 20),
                   ElevatedButton(onPressed: () {}, child: Text("Registrarse")),
+
                   const SizedBox(width: 20),
                   ElevatedButton(
-                    onPressed: () async {
-                      Usuario usuario = Usuario(
-                        displayName: _nombreController.text,
-                        email: _correoController.text,
-                        password: _contrasenaController.text,
-                      );
-
-                      try {
-                        await Loginservice().registro(usuario);
-                        //print("Usuario registrado: ${usuario.toJson()}");
-                      } catch (e) {
-                        print(e);
-                      }
-                    },
+                    onPressed: registro,
                     child: Text("Registrarse2"),
                   ),
                 ],
@@ -110,5 +100,58 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  void registro() async {
+    String nombre = _nombreController.text.trim();
+    String correo = _correoController.text.trim();
+    String contrasena = _contrasenaController.text.trim();
+    String confirmarContrasena = _confirmarContrasenaController.text.trim();
+
+    if (validarRegistro(nombre, correo, contrasena, confirmarContrasena)) {
+      Usuario usuario = Usuario(
+        displayName: _nombreController.text,
+        email: _correoController.text,
+        password: _contrasenaController.text,
+      );
+
+      try {
+        await Loginservice().registro(usuario);
+        print("Usuario registrado: ${usuario.toJson()}");
+      } catch (e) {
+        print(e);
+      }
+    }
+  }
+
+  bool validarRegistro(nombre, correo, contrasena, confirmarContrasena) {
+    final RegExp emailRegExp = RegExp(
+      r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
+    );
+
+    if (nombre.isEmpty ||
+        correo.isEmpty ||
+        contrasena.isEmpty ||
+        confirmarContrasena.isEmpty) {
+      print("Faltan datos");
+      return false;
+    }
+
+    if (contrasena.length < 6) {
+      print("La contraseña debe tener al menos 6 caracteres");
+      return false;
+    }
+
+    if (contrasena != confirmarContrasena) {
+      print("Las contraseñas no coinciden");
+      return false;
+    }
+
+    if (!emailRegExp.hasMatch(correo)) {
+      print("Correo inválido");
+      return false;
+    }
+
+    return true;
   }
 }
