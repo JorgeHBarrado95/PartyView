@@ -3,13 +3,9 @@ import 'dart:ffi';
 class Usuario {
   String email;
   String password;
-  String displayName;
+  String? displayName;
 
-  Usuario({
-    required this.email,
-    required this.password,
-    required this.displayName,
-  });
+  Usuario({required this.email, required this.password, this.displayName});
 
   Map<String, dynamic> toJson() {
     return {"email": email, "password": password};

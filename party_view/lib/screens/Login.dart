@@ -77,12 +77,7 @@ class _LoginState extends State<Login> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                    onPressed: () {
-                      // Lógica de inicio de sesión
-                      String correo = _correoController.text;
-                      String contrasena = _contrasenaController.text;
-                      print("Correo: $correo, Contraseña: $contrasena");
-                    },
+                    onPressed: login,
                     child: Text("Iniciar sesión"),
                   ),
                   const SizedBox(width: 20),
@@ -117,7 +112,6 @@ class _LoginState extends State<Login> {
 
       try {
         await Loginservice().registro(usuario);
-        print("Usuario registrado: ${usuario.toJson()}");
       } catch (e) {
         print(e);
       }
@@ -153,5 +147,26 @@ class _LoginState extends State<Login> {
     }
 
     return true;
+  }
+
+  void login() async {
+    String correo = _correoController.text.trim();
+    String contrasena = _contrasenaController.text.trim();
+
+    if (correo.isEmpty || contrasena.isEmpty) {
+      print("Faltan datos");
+      return;
+    }
+
+    Usuario usuario = Usuario(
+      email: _correoController.text,
+      password: _contrasenaController.text,
+    );
+
+    try {
+      await Loginservice().login(usuario);
+    } catch (e) {
+      print(e);
+    }
   }
 }

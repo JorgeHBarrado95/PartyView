@@ -26,6 +26,11 @@ class Loginservice {
         "returnSecureToken": true,
       }),
     );
+    if (response.statusCode == 200) {
+      print("Registro ok");
+    } else {
+      print("Error en el registro");
+    }
     //print(response.body);
 
     //Actualizar el displayName
@@ -39,6 +44,12 @@ class Loginservice {
       }),
     );
 
+    if (response.statusCode == 200) {
+      print("Registro del nombre ok");
+    } else {
+      print("Error en el registro");
+    }
+
     //print(response2.body);
   }
 
@@ -46,12 +57,19 @@ class Loginservice {
     final response = await http.post(
       urlLogin,
       headers: {'Content-Type': 'application/json'},
-      body: {
+      body: jsonEncode({
         "email": usuario.email,
         "password": usuario.password,
         "returnSecureToken": true,
-      },
+      }),
     );
-    print(response.body);
+    print("------------------");
+    if (response.statusCode == 400) {
+      print("Error en la contraseña");
+    } else if (response.statusCode == 200) {
+      print("Usuario logeado");
+    } else {
+      print("Error desconocido");
+    }
   }
 }
