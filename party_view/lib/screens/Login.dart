@@ -19,12 +19,12 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    double containerWidth = size.width * 0.4;
+    //double containerWidth = size.width * 0.4;
 
     return Scaffold(
       body: Center(
         child: Container(
-          width: containerWidth,
+          //width: containerWidth,
           padding: EdgeInsets.all(30),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
@@ -73,8 +73,8 @@ class _LoginState extends State<Login> {
               const SizedBox(height: 15),
 
               const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Column(
+                //mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
                     onPressed: login,
