@@ -45,7 +45,7 @@ class GestorSalasService {
 
   Future<List<Sala>> getSalas() async {
     final url = Uri.parse(this.url);
-    final response = await http.get(Uri.parse("${url}.json"));
+    final response = await http.get(Uri.parse("$url}.json"));
     //final response = await http.get(url);
 
     if (response.statusCode != 200) {
