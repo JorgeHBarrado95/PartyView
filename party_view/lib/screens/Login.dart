@@ -9,11 +9,15 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   // Controladores para los campos de texto
-  final TextEditingController _correoController = TextEditingController();
-  final TextEditingController _contrasenaController = TextEditingController();
+  final TextEditingController _correoController = TextEditingController(
+    text: "jorgehbarrado@gmail.com",
+  );
+  final TextEditingController _contrasenaController = TextEditingController(
+    text: "123456",
+  );
   final TextEditingController _nombreController = TextEditingController();
   final TextEditingController _confirmarContrasenaController =
-      TextEditingController();
+      TextEditingController(text: "123456");
 
   @override
   Widget build(BuildContext context) {
@@ -81,12 +85,10 @@ class _LoginState extends State<Login> {
                     child: Text("Iniciar sesión"),
                   ),
                   const SizedBox(width: 20),
-                  ElevatedButton(onPressed: () {}, child: Text("Registrarse")),
 
-                  const SizedBox(width: 20),
                   ElevatedButton(
                     onPressed: registro,
-                    child: Text("Registrarse2"),
+                    child: Text("Registrarse"),
                   ),
                 ],
               ),
