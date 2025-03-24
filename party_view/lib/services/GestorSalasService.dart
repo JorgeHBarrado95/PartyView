@@ -30,7 +30,10 @@ class GestorSalasService {
       int randId = random.nextInt(100000);
       //print(randId);
 
-      String randIdString = randId.toString().padLeft(5, "0"); //Se añaden 0 para q simpre sean 5 digitos
+      String randIdString = randId.toString().padLeft(
+        5,
+        "0",
+      ); //Se añaden 0 para q simpre sean 5 digitos
 
       final url2 = Uri.parse("${this.url}/${randIdString}.json");
 
@@ -44,8 +47,8 @@ class GestorSalasService {
   }
 
   Future<List<Sala>> getSalas() async {
-    final url = Uri.parse(this.url);
-    final response = await http.get(Uri.parse("$url}.json"));
+    final url = Uri.parse("${this.url}.json");
+    final response = await http.get(url);
     //final response = await http.get(url);
 
     if (response.statusCode != 200) {
