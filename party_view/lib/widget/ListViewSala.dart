@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:party_view/models/Sala.dart';
+import "package:flutter/material.dart";
+import "package:party_view/models/Sala.dart";
 
-class CustomListView extends StatelessWidget {
-  const CustomListView({super.key, required this.salas});
+class ListViewSala extends StatelessWidget {
+  const ListViewSala({super.key, required this.salas});
 
   final List<Sala> salas;
 

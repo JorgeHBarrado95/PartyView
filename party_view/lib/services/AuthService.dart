@@ -1,3 +1,5 @@
+import 'package:party_view/models/Sala.dart';
+
 class Authservice {
   static final Authservice _instance = Authservice._internal();
 
@@ -9,6 +11,7 @@ class Authservice {
 
   String? _token;
   String? _displayName;
+  Sala? _sala;
 
   //Token
   Future<void> saveToken(String token) async {
@@ -34,5 +37,18 @@ class Authservice {
 
   void clearDisplayName() {
     _displayName = null;
+  }
+
+  //Sala
+  Future<void> saveSala(Sala sala) async {
+    _sala = sala;
+  }
+
+  Sala? getSala() {
+    return _sala;
+  }
+
+  void clearSala() {
+    _sala = null;
   }
 }

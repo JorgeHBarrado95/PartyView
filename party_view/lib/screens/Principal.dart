@@ -38,9 +38,7 @@ class _PrincipalState extends State<Principal> {
                   } else if (snapshot.hasError) {
                     return Center(child: Text("Error al cargar las salas"));
                   } else {
-                    return Expanded(
-                      child: CustomListView(salas: snapshot.data!),
-                    );
+                    return Expanded(child: ListViewSala(salas: snapshot.data!));
                   }
                 },
               ),
