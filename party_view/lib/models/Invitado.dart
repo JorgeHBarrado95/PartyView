@@ -5,10 +5,10 @@ class Invitado {
   Invitado({required this.nombre, required this.ip});
 
   Map<String, dynamic> toJson() {
-    return {'nombre': nombre, 'ip': ip};
+    return {"nombre": nombre, "ip": ip};
   }
 
   factory Invitado.fromJson(Map<String, dynamic> json) {
-    return Invitado(nombre: json['nombre'], ip: json['ip']);
+    return Invitado(nombre: json["nombre"], ip: json["ip"]);
   }
 }

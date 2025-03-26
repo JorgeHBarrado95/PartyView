@@ -5,10 +5,10 @@ class Anfitrion {
   Anfitrion({required this.nombre, required this.ip});
 
   Map<String, dynamic> toJson() {
-    return {'nombre': nombre, 'ip': ip};
+    return {"nombre": nombre, "ip": ip};
   }
 
   factory Anfitrion.fromJson(Map<String, dynamic> json) {
-    return Anfitrion(nombre: json['nombre'], ip: json['ip']);
+    return Anfitrion(nombre: json["nombre"], ip: json["ip"]);
   }
 }

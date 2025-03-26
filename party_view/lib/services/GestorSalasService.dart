@@ -1,8 +1,12 @@
-import 'dart:convert';
-import 'dart:math';
+import "dart:convert";
+import "dart:io";
+import "dart:math";
 
-import 'package:http/http.dart' as http;
-import 'package:party_view/models/Sala.dart';
+import "package:http/http.dart" as http;
+import "package:party_view/models/Anfitrion.dart";
+import "package:party_view/models/Invitado.dart";
+import "package:party_view/models/Sala.dart";
+import "package:party_view/services/AuthService.dart";
 
 class GestorSalasService {
   final String url =
@@ -52,7 +56,7 @@ class GestorSalasService {
     //final response = await http.get(url);
 
     if (response.statusCode != 200) {
-      throw Exception('Fallo al obtener salas: ${response.body}');
+      throw Exception("Fallo al obtener salas: ${response.body}");
     }
 
     final Map<String, dynamic> data = jsonDecode(response.body);

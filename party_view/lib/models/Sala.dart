@@ -1,5 +1,5 @@
-import 'package:party_view/models/Anfitrion.dart';
-import 'package:party_view/models/Invitado.dart';
+import "package:party_view/models/Anfitrion.dart";
+import "package:party_view/models/Invitado.dart";
 
 class Sala {
   late String id;
@@ -20,24 +20,24 @@ class Sala {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'capacidad': capacidad,
-      'video': video,
-      'estado': estado,
-      'anfitrion': anfitrion.toJson(),
-      'invitados': invitados.map((invitado) => invitado.toJson()).toList(),
+      "id": id,
+      "capacidad": capacidad,
+      "video": video,
+      "estado": estado,
+      "anfitrion": anfitrion.toJson(),
+      "invitados": invitados.map((invitado) => invitado.toJson()).toList(),
     };
   }
 
   factory Sala.fromJson(String id, Map<String, dynamic> json) {
     return Sala(
       id: id,
-      capacidad: json['capacidad'],
-      video: json['video'] is bool ? json['video'] : json['video'] == 'true',
-      estado: json['estado'],
-      anfitrion: Anfitrion.fromJson(json['anfitrion']),
+      capacidad: json["capacidad"],
+      video: json["video"] is bool ? json["video"] : json["video"] == "true",
+      estado: json["estado"],
+      anfitrion: Anfitrion.fromJson(json["anfitrion"]),
       invitados:
-          (json['invitados'] as List)
+          (json["invitados"] as List)
               .map((invitado) => Invitado.fromJson(invitado))
               .toList(),
     );

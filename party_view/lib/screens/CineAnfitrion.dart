@@ -1,9 +1,8 @@
-import 'dart:io'; // Importa dart:io para usar Platform
-import 'package:flutter/material.dart';
-import 'package:party_view/models/Anfitrion.dart';
-import 'package:party_view/models/Invitado.dart';
-import 'package:party_view/models/Sala.dart';
-import 'package:party_view/services/GestorSalasService.dart';
+import "dart:io"; // Importa dart:io para usar Platform
+import "package:flutter/material.dart";
+import "package:party_view/models/Sala.dart";
+import "package:party_view/services/AuthService.dart";
+import "package:party_view/services/GestorSalasService.dart";
 
 class CineAnfitrion extends StatelessWidget {
   const CineAnfitrion({super.key});

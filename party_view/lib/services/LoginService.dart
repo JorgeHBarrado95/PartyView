@@ -1,9 +1,9 @@
-import 'dart:convert';
-import 'dart:math';
+import "dart:convert";
+import "dart:math";
 
-import 'package:http/http.dart' as http;
-import 'package:party_view/models/Usuario.dart';
-import 'package:party_view/services/AuthService.dart';
+import "package:http/http.dart" as http;
+import "package:party_view/models/Usuario.dart";
+import "package:party_view/services/AuthService.dart";
 
 class Loginservice {
   final urlRegister = Uri.parse(
@@ -25,7 +25,7 @@ class Loginservice {
   Future<int> registro(Usuario usuario) async {
     final response = await http.post(
       urlRegister,
-      headers: {'Content-Type': 'application/json'},
+      headers: {"Content-Type": "application/json"},
       body: jsonEncode({
         "email": usuario.email,
         "password": usuario.password,
@@ -37,7 +37,7 @@ class Loginservice {
       //Actualizar el displayName
       final response2 = await http.post(
         urlUpdate,
-        headers: {'Content-Type': 'application/json'},
+        headers: {"Content-Type": "application/json"},
         body: jsonEncode({
           "idToken": jsonDecode(response.body)["idToken"],
           "displayName": usuario.displayName,
@@ -66,7 +66,7 @@ class Loginservice {
   Future<int> login(Usuario usuario) async {
     final response = await http.post(
       urlLogin,
-      headers: {'Content-Type': 'application/json'},
+      headers: {"Content-Type": "application/json"},
       body: jsonEncode({
         "email": usuario.email,
         "password": usuario.password,
@@ -79,6 +79,7 @@ class Loginservice {
     } else if (response.statusCode == 200) {
       //Login ok
       await Authservice().saveDisplayName(
+        //Guarda el nombre de user
         jsonDecode(response.body)["displayName"],
       );
 
