@@ -37,9 +37,11 @@ class Sala {
       estado: json['estado'],
       anfitrion: Anfitrion.fromJson(json['anfitrion']),
       invitados:
-          (json['invitados'] as List)
+          (json["invitados"] as List? ?? [])
               .map((invitado) => Invitado.fromJson(invitado))
               .toList(),
     );
   }
+
+
 }
