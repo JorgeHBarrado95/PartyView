@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:party_view/models/Sala.dart';
 import 'package:party_view/services/AuthService.dart';
 import 'package:party_view/services/GestorSalasService.dart';
-import 'package:party_view/widget/CustomListView.dart';
+import 'package:party_view/widget/ListViewSala.dart';
 
 class Principal extends StatefulWidget {
   Principal({super.key});

@@ -1,14 +1,20 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:party_view/models/Anfitrion.dart';
 import 'package:party_view/models/Sala.dart';
+import 'package:party_view/provider/SalaProvider.dart';
+import 'package:party_view/services/AuthService.dart';
+import 'package:provider/provider.dart';
 
 class GestorSalasService {
   final String url =
       "https://partyview-8ba30-default-rtdb.europe-west1.firebasedatabase.app/Salas";
 
-  Future<void> addSala() async {
+  Future<void> addSala(BuildContext context) async {
     //Creo objeto sala
     Sala sala = Sala(
       id: await idSalaComp(),
@@ -21,7 +27,7 @@ class GestorSalasService {
       ),
       invitados: [],
     );
-    await Authservice().saveSala(sala);
+
     final url = Uri.parse("${this.url}/${sala.id}.json");
     final response = await http.put(
       url,
@@ -35,7 +41,7 @@ class GestorSalasService {
     }
 
     if (response.statusCode == 200) {
-      print("Sala añadida");
+      Provider.of<SalaProvider>(context, listen: false).setSala(sala);
       return;
     }
 
@@ -81,13 +87,11 @@ class GestorSalasService {
       salas.add(Sala.fromJson(key, value));
     });
 
-    print("----------------");
-    print(salas.first.anfitrion.ip);
     return salas;
   }
 
-  Future<void> removeSalas() async {
-    Sala? sala = await Authservice().getSala();
+  Future<void> removeSalas(BuildContext context) async {
+    final sala = Provider.of<SalaProvider>(context).sala;
 
     final url = Uri.parse("${this.url}/${sala!.id}.json");
     final response = await http.delete(url);

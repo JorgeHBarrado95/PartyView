@@ -11,7 +11,6 @@ class Authservice {
 
   String? _token;
   String? _displayName;
-  Sala? _sala;
 
   //Token
   Future<void> saveToken(String token) async {
@@ -39,16 +38,4 @@ class Authservice {
     _displayName = null;
   }
 
-  //Sala
-  Future<void> saveSala(Sala sala) async {
-    _sala = sala;
-  }
-
-  Sala? getSala() {
-    return _sala;
-  }
-
-  void clearSala() {
-    _sala = null;
-  }
 }

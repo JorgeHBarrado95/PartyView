@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:party_view/models/Anfitrion.dart';
 import 'package:party_view/models/Invitado.dart';
 import 'package:party_view/models/Sala.dart';
+import 'package:party_view/provider/SalaProvider.dart';
+import 'package:party_view/services/AuthService.dart';
 import 'package:party_view/services/GestorSalasService.dart';
+import 'package:provider/provider.dart';
 
 class CineAnfitrion extends StatefulWidget {
   const CineAnfitrion({super.key});
@@ -20,7 +23,7 @@ class _CineAnfitrionState extends State<CineAnfitrion> {
   }
 
   Future<void> _onScreenOpened() async {
-    await GestorSalasService().addSala();
+    await GestorSalasService().addSala(context);
   }
 
   @override
@@ -30,7 +33,7 @@ class _CineAnfitrionState extends State<CineAnfitrion> {
   }
 
   void _onScreenClosed() {
-    GestorSalasService().removeSalas();
+    GestorSalasService().removeSalas(context);
   }
 
   @override
@@ -96,27 +99,10 @@ class _MenuArribaState extends State<MenuArriba> {
   String _selectedEstado = "Abierto";
   final List<String> _estados = ["Abierto", "Cerrado"];
 
-  void initState() {
-    super.initState();
-    _cargarSala();
-  }
-
-  Future<void> _cargarSala() async {
-    try {
-      Sala? salaNew = await Authservice().getSala();
-      setState(() {
-        sala = salaNew;
-        //print(sala!.id);
-      });
-    } catch (e) {
-      print("Error al cargar la sala");
-    }
-
-    sala = await Authservice().getSala();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final sala = Provider.of<SalaProvider>(context).sala;
+
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,7 +111,7 @@ class _MenuArribaState extends State<MenuArriba> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                sala != null ? "Sala: #${sala!.id}" : "Cargando sala...",
+                sala != null ? "Sala: #${sala.id}" : "Cargando sala...",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               SizedBox(width: 15),
