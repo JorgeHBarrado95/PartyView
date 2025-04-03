@@ -127,10 +127,13 @@ class _MenuArribaState extends State<MenuArriba> {
               SizedBox(width: 15),
               Row(
                 children: [
-                  Text(
-                    "Capacidad: ${_sala!.capacidad}",
-                    style: TextStyle(fontSize: 16),
-                  ),
+                  Text(() {
+                    try {
+                      return "Capacidad: ${_sala!.capacidad}";
+                    } catch (e) {
+                      return "Capacidad no disponible";
+                    }
+                  }(), style: TextStyle(fontSize: 16)),
                   SizedBox(width: 10),
                   ElevatedButton(
                     onPressed: () {
@@ -176,6 +179,7 @@ class _MenuArribaState extends State<MenuArriba> {
                 onChanged: (String? newValue) {
                   setState(() {
                     _selectedEstado = newValue!;
+                    _salaProvider.estado(_selectedEstado);
                   });
                 },
               ),

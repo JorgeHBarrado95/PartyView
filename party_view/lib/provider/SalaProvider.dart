@@ -36,6 +36,12 @@ class SalaProvider with ChangeNotifier {
     }
   }
 
+  void estado(String estado) {
+    _sala!.estado = estado;
+    notifyListeners();
+    //print(_sala!.estado);
+  }
+
   Future<void> crearSala() async {
     _sala = Sala(
       id: await idSalaComp(),
