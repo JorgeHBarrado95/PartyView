@@ -110,7 +110,8 @@ class _MenuArribaState extends State<MenuArriba> {
 
   @override
   Widget build(BuildContext context) {
-    final sala = Provider.of<SalaProvider>(context).sala;
+    final _salaProvider = Provider.of<SalaProvider>(context);
+    final _sala = _salaProvider.sala;
 
     return Container(
       child: Column(
@@ -120,16 +121,20 @@ class _MenuArribaState extends State<MenuArriba> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                sala != null ? "Sala: #${sala.id}" : "Cargando sala...",
+                _sala != null ? "Sala: #${_sala.id}" : "Cargando sala...",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               SizedBox(width: 15),
               Row(
                 children: [
-                  Text("Capacidad: 5", style: TextStyle(fontSize: 16)),
+                  Text(
+                    "Capacidad: ${_sala!.capacidad}",
+                    style: TextStyle(fontSize: 16),
+                  ),
                   SizedBox(width: 10),
                   ElevatedButton(
                     onPressed: () {
+                      _salaProvider.incrementarCapacidad();
                       print("Incrementar capacidad");
                     },
                     style: ElevatedButton.styleFrom(
@@ -140,6 +145,7 @@ class _MenuArribaState extends State<MenuArriba> {
                   ),
                   ElevatedButton(
                     onPressed: () {
+                      _salaProvider.disminuirCapacidad();
                       print("Reducir capacidad");
                     },
                     style: ElevatedButton.styleFrom(

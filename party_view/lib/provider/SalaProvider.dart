@@ -24,6 +24,18 @@ class SalaProvider with ChangeNotifier {
     notifyListeners(); // Notifica que la sala ha sido eliminada
   }
 
+  void incrementarCapacidad() {
+    _sala!.capacidad++;
+    notifyListeners();
+  }
+
+  void disminuirCapacidad() {
+    if (_sala!.capacidad > 2) {
+      _sala!.capacidad--;
+      notifyListeners();
+    }
+  }
+
   Future<void> crearSala() async {
     _sala = Sala(
       id: await idSalaComp(),
@@ -54,7 +66,8 @@ class SalaProvider with ChangeNotifier {
         "0",
       ); //Se añaden 0 para q simpre sean 5 digitos
 
-      if (await _gestorSalasService.comprobarSiExiste(_randIdString) != "null") {
+      if (await _gestorSalasService.comprobarSiExiste(_randIdString) !=
+          "null") {
         //print("id sala: $randIdString");
         _idMal = false; //Si no existe, se sale del bucle
       }
