@@ -77,7 +77,7 @@ class GestorSalasService {
     //final response = await http.get(url);
 
     if (response.statusCode != 200) {
-      throw Exception('Fallo al obtener salas: ${response.body}');
+      throw Exception("Fallo al obtener salas: ${response.body}");
     }
 
     final Map<String, dynamic> data = jsonDecode(response.body);
@@ -90,10 +90,8 @@ class GestorSalasService {
     return salas;
   }
 
-  Future<void> removeSalas(BuildContext context) async {
-    final sala = Provider.of<SalaProvider>(context).sala;
-
-    final url = Uri.parse("${this.url}/${sala!.id}.json");
+  Future<void> removeSalas(String id) async {
+    final url = Uri.parse("${this.url}/${id}.json");
     final response = await http.delete(url);
 
     if (response.statusCode != 200) {
