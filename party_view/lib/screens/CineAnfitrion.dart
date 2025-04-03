@@ -17,22 +17,22 @@ class CineAnfitrion extends StatefulWidget {
 
 class _CineAnfitrionState extends State<CineAnfitrion> {
   late SalaProvider salaProvider;
-
-  @override
-  void initState() {
-    super.initState();
-    _onScreenOpened(); //Detecta cuando se abre la ventana
-  }
+  bool _inicializado = false;
 
   @override
   void didChangeDependencies() {
     //Llama a didChangeDependencies cuando el widget se inserta en el árbol de widgets
     super.didChangeDependencies();
-    salaProvider = Provider.of<SalaProvider>(context, listen: true);
+    if (!_inicializado) {
+      salaProvider = Provider.of<SalaProvider>(context, listen: true);
+      _onScreenOpened(); //Detecta cuando se abre la ventana
+      _inicializado = true;
+    }
   }
 
   Future<void> _onScreenOpened() async {
-    await GestorSalasService().addSala(context);
+    await salaProvider.crearSala();
+    await GestorSalasService().addSala(salaProvider.sala!);
   }
 
   @override
