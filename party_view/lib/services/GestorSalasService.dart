@@ -67,4 +67,8 @@ class GestorSalasService {
       throw Exception("Fallo al eliminar sala: ${response.body}");
     }
   }
+
+  Future<void> actualizarSala(Sala sala) async{
+    final _url = Uri.parse("${this.url}/${sala.id}.json");
+    final _response = await http.delete(_url);  }
 }

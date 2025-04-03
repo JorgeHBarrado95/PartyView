@@ -27,18 +27,22 @@ class SalaProvider with ChangeNotifier {
   void incrementarCapacidad() {
     _sala!.capacidad++;
     notifyListeners();
+    _sincronizarBD();
   }
 
   void disminuirCapacidad() {
     if (_sala!.capacidad > 2) {
       _sala!.capacidad--;
       notifyListeners();
+      _sincronizarBD();
     }
   }
 
   void estado(String estado) {
     _sala!.estado = estado;
     notifyListeners();
+    _sincronizarBD();
+
     //print(_sala!.estado);
   }
 
@@ -103,5 +107,9 @@ class SalaProvider with ChangeNotifier {
     }
 
     return "null"; // Devuelve null si no se encuentra una dirección IP
+  }
+
+  Future<void> _sincronizarBD() async {
+    await _gestorSalasService.addSala(_sala!); //Uso el metodo con el q creo la sala, porq hace lo mismo
   }
 }
