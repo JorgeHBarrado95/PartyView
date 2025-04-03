@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
@@ -9,6 +10,17 @@ import 'package:party_view/models/Sala.dart';
 import 'package:party_view/provider/SalaProvider.dart';
 import 'package:party_view/services/AuthService.dart';
 import 'package:provider/provider.dart';
+=======
+import "dart:convert";
+import "dart:io";
+import "dart:math";
+
+import "package:http/http.dart" as http;
+import "package:party_view/models/Anfitrion.dart";
+import "package:party_view/models/Invitado.dart";
+import "package:party_view/models/Sala.dart";
+import "package:party_view/services/AuthService.dart";
+>>>>>>> origin/ConexionSala
 
 class GestorSalasService {
   final String url =
