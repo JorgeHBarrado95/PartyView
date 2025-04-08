@@ -73,4 +73,24 @@ class GestorSalasService {
     final _url = Uri.parse("${this.url}/${sala.id}.json");
     final _response = await http.delete(_url);
   }
+
+  Future<List<Persona>> obtenerInvitados(String id) async {
+    final url = Uri.parse("${this.url}/${id}/invitados.json");
+    final response = await http.get(url);
+
+    if (response.statusCode != 200) {
+      throw Exception("Fallo al obtener invitados: ${response.body}");
+    }
+    if (response.body == "null" || response.body.isEmpty) {
+      //Si no hay invitados, devuelve una lista vacía
+      return [];
+    }
+    final List<dynamic> data = jsonDecode(response.body);
+    final List<Persona> invitados =
+        data.map((item) {
+          return Persona.fromJson(item as Map<String, dynamic>);
+        }).toList();
+
+    return invitados;
+  }
 }

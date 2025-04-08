@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -11,6 +12,7 @@ import 'package:party_view/services/GestorSalasService.dart';
 class SalaProvider with ChangeNotifier {
   final GestorSalasService _gestorSalasService = GestorSalasService();
   Sala? _sala;
+  Timer? _timer;
 
   Sala? get sala => _sala;
 
@@ -112,4 +114,23 @@ class SalaProvider with ChangeNotifier {
   Future<void> _sincronizarBD() async {
     await _gestorSalasService.addSala(_sala!); //Uso el metodo con el q creo la sala, porq hace lo mismo
   }
+
+  Future<void> _obtenerInvitados() async {
+    _sala!.invitados = await _gestorSalasService.obtenerInvitados(_sala!.id);
+    notifyListeners();
+  }
+
+    //cada 2 seg hace una peticion http a la bd para obtener los invitados
+  void iniciarTimer() {
+    _timer = Timer.periodic(Duration(seconds: 2), (timer) async {
+      if (sala != null) {
+        await _obtenerInvitados();
+      }
+    });
+  }
+
+  void detenerTimer() {
+    _timer?.cancel();
+  }
+
 }

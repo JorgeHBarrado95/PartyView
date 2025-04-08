@@ -1,3 +1,4 @@
+import 'package:party_view/widget/ListViewInvitados.dart';
 import 'package:provider/provider.dart';
 import 'package:party_view/services/GestorSalasService.dart';
 import 'package:party_view/services/AuthService.dart';
@@ -32,6 +33,7 @@ class _CineAnfitrionState extends State<CineAnfitrion> {
   Future<void> _onScreenOpened() async {
     await salaProvider.crearSala();
     await GestorSalasService().addSala(salaProvider.sala!);
+    salaProvider.iniciarTimer();
   }
 
   @override
@@ -42,6 +44,7 @@ class _CineAnfitrionState extends State<CineAnfitrion> {
 
   void _onScreenClosed() {
     GestorSalasService().removeSalas(salaProvider.sala!.id);
+    salaProvider.detenerTimer();
   }
 
   @override
@@ -86,12 +89,20 @@ class Body extends StatelessWidget {
   }
 }
 
+//LIST VIEW DE LOS INVITADOS
 class ListaInvitados extends StatelessWidget {
   const ListaInvitados({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(child: Text("Lista de invitados"));
+    final _salaProvider = Provider.of<SalaProvider>(context, listen: true);
+    final invitados = _salaProvider.sala?.invitados ?? [];
+
+    if (invitados.isEmpty) {
+      return Center(child: Text("No hay invitados disponibles"));
+    }
+
+    return Expanded(child: ListViewInvitados(invitados: invitados));
   }
 }
 
