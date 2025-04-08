@@ -92,7 +92,7 @@ include(flutter/generated_plugins.cmake)
 # directory.
 set(BUILD_BUNDLE_DIR "${PROJECT_BINARY_DIR}/bundle")
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-set(CMAKE_INSTALL_PREFIX "${HOME}/party_view" CACHE PATH "..." FORCE)
+set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install" CACHE PATH "..." FORCE)
 endif()
 
 # Start with a clean build bundle directory every time.
