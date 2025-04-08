@@ -1,13 +1,12 @@
-import 'package:party_view/models/Anfitrion.dart';
-import 'package:party_view/models/Invitado.dart';
+import "package:party_view/models/Persona.dart";
 
 class Sala {
   late String id;
   late String estado;
   late num capacidad;
   late bool video;
-  late Anfitrion anfitrion;
-  late List<Invitado> invitados;
+  late Persona anfitrion;
+  late List<Persona> invitados;
 
   Sala({
     required this.id,
@@ -35,13 +34,11 @@ class Sala {
       capacidad: json["capacidad"],
       video: json["video"] is bool ? json["video"] : json["video"] == "true",
       estado: json["estado"],
-      anfitrion: Anfitrion.fromJson(json["anfitrion"]),
+      anfitrion: Persona.fromJson(json["anfitrion"]),
       invitados:
           (json["invitados"] as List? ?? [])
-              .map((invitado) => Invitado.fromJson(invitado))
+              .map((invitado) => Persona.fromJson(invitado))
               .toList(),
     );
   }
-
-
 }

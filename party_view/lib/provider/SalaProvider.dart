@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:party_view/models/Anfitrion.dart';
+import 'package:party_view/models/Persona.dart';
 import 'package:party_view/models/Sala.dart';
 import 'package:party_view/services/AuthService.dart';
 import 'package:party_view/services/GestorSalasService.dart';
@@ -52,7 +52,7 @@ class SalaProvider with ChangeNotifier {
       capacidad: 5,
       video: true,
       estado: "abierto",
-      anfitrion: Anfitrion(
+      anfitrion: Persona(
         nombre: Authservice().getDisplayName() ?? "Desconocido",
         ip: await getIpAddress(),
       ),

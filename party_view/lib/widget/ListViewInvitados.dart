@@ -1,10 +1,10 @@
 import "package:flutter/material.dart";
-import "package:party_view/models/Invitado.dart";
+import "package:party_view/models/Persona.dart";
 
 class Listviewinvitados extends StatelessWidget {
   const Listviewinvitados({super.key, required this.invitados});
 
-  final List<Invitado> invitados;
+  final List<Persona> invitados;
 
   @override
   Widget build(BuildContext context) {

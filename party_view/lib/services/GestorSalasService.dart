@@ -3,8 +3,7 @@ import "dart:io";
 import "dart:math";
 
 import "package:http/http.dart" as http;
-import "package:party_view/models/Anfitrion.dart";
-import "package:party_view/models/Invitado.dart";
+import "package:party_view/models/Persona.dart";
 import "package:party_view/models/Sala.dart";
 import "package:party_view/services/AuthService.dart";
 

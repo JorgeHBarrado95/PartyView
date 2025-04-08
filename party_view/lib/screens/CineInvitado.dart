@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CineUsuario extends StatelessWidget {
-  const CineUsuario({super.key});
+class Cineinvitado extends StatelessWidget {
+  const Cineinvitado({super.key});
 
   @override
   Widget build(BuildContext context) {
