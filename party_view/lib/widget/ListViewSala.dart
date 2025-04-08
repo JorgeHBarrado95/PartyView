@@ -1,5 +1,12 @@
+import "package:awesome_snackbar_content/awesome_snackbar_content.dart";
 import "package:flutter/material.dart";
+import "package:party_view/models/Persona.dart";
 import "package:party_view/models/Sala.dart";
+import "package:party_view/provider/SalaProvider.dart";
+import "package:party_view/services/AuthService.dart";
+import "package:party_view/services/GestorSalasService.dart";
+import "package:party_view/widget/CustomSnackBar.dart";
+import "package:provider/provider.dart";
 
 class ListViewSala extends StatelessWidget {
   const ListViewSala({super.key, required this.salas});
@@ -26,10 +33,7 @@ class ListViewSala extends StatelessWidget {
                   subtitle: Text(
                     "Capacidad max: ${sala.capacidad}, Estado: ${sala.estado}",
                   ),
-                  onTap:
-                      () => print(
-                        "Seleccionaste la sala de ${sala.anfitrion.nombre}",
-                      ),
+                  onTap: () => conectarSala(context, sala),
                 ),
                 Text("Anfitrión: ${sala.anfitrion.nombre}"),
               ],
@@ -39,4 +43,78 @@ class ListViewSala extends StatelessWidget {
       },
     );
   }
+
+  void conectarSala(BuildContext context, Sala sala) {
+    final _salaProvider = Provider.of<SalaProvider>(context, listen: false);
+    //final player = AudioPlayer();
+    _salaProvider.setSala(sala);
+
+    GestorSalasService _gestorSalasService = GestorSalasService();
+    _gestorSalasService
+        .comprobarSiExiste(sala.id)
+        .then((value) async {
+          //print(value);
+          if (value.id == sala.id) {
+            if (_salaProvider.sala!.invitados.length < //Limite de invitados
+                _salaProvider.sala!.capacidad) {
+              //print("conectado y hay sitio");
+              Navigator.pushNamed(context, "/cineInvitado");
+
+              Persona _persona = Persona(
+                //Crea el invitado
+                nombre: Authservice().getDisplayName() ?? "Desconocido",
+                ip: await _salaProvider.getIpAddress(),
+              );
+
+              sala.invitados.add(_persona); //Añade el invitado a la sala
+
+              _gestorSalasService //Modifica la sala en la bd
+                  .addSala(sala)
+                  .then((value) {
+                    print("Añadido a la sala");
+                  })
+                  .catchError((error) async {
+                    print("Error al añadir a la sala: $error");
+
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(
+                        CustomSnackbar.aprobacion(
+                          "Error",
+                          "Error al meterte en la sala",
+                        ),
+                      );
+                    //await player.play(AssetSource("sounds/notification.mp3"));
+
+                  });
+            } else {
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  CustomSnackbar.error(
+                    "¡Error!",
+                    "La sala está llena tete!!!!!!",
+                  ),
+                );
+              //await player.play(AssetSource("sounds/notification.mp3"));
+            }
+          }
+        })
+        .catchError((error) async {
+          print(error);
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              CustomSnackbar.error(
+                "¡Error!",
+                "Algo salió mal al realizar la acción.",
+              ),
+            );
+          //await player.play(AssetSource("sounds/notification.mp3"));
+        });
+  }
 }
+
+// 1º COmprobas q haya un sitio en la lista de invitados y en la cap
+// 2º Añadirse a la bd
+// 3º El anfitrion tiene q detectar q hay alguien en bd copnectado

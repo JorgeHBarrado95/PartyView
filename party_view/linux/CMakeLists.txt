@@ -54,6 +54,18 @@ add_subdirectory(${FLUTTER_MANAGED_DIR})
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTK REQUIRED IMPORTED_TARGET gtk+-3.0)
 
+# Agregar configuración para GStreamer
+pkg_check_modules(GSTREAMER REQUIRED gstreamer-1.0>=1.14)
+pkg_check_modules(GSTREAMER_BASE REQUIRED gstreamer-base-1.0>=1.14)
+
+# Incluir directorios de GStreamer
+include_directories(${GSTREAMER_INCLUDE_DIRS})
+include_directories(${GSTREAMER_BASE_INCLUDE_DIRS})
+
+# Enlazar bibliotecas de GStreamer
+link_directories(${GSTREAMER_LIBRARY_DIRS})
+link_directories(${GSTREAMER_BASE_LIBRARY_DIRS})
+
 # Application build; see runner/CMakeLists.txt.
 add_subdirectory("runner")
 
@@ -80,7 +92,7 @@ include(flutter/generated_plugins.cmake)
 # directory.
 set(BUILD_BUNDLE_DIR "${PROJECT_BINARY_DIR}/bundle")
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-  set(CMAKE_INSTALL_PREFIX "${BUILD_BUNDLE_DIR}" CACHE PATH "..." FORCE)
+set(CMAKE_INSTALL_PREFIX "${HOME}/party_view" CACHE PATH "..." FORCE)
 endif()
 
 # Start with a clean build bundle directory every time.

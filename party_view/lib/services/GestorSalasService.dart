@@ -23,18 +23,20 @@ class GestorSalasService {
       throw Exception("Failed to add sala: ${response.body}");
       return;
     }
-
   }
 
-  Future<String> comprobarSiExiste(String id) async {
+  Future<dynamic> comprobarSiExiste(String id) async {
     final url2 = Uri.parse("${this.url}/${id}.json");
 
     final response = await http.get(url2);
 
     //print(response.body);
     if (response.body == "null") {
-      print("object");
+      //Si la respuesta es null no existe la sala
       return id;
+    } else {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      return Sala.fromJson(id, data); // Convierte el JSON en un objeto Sala
     }
     return "null";
   }
@@ -67,7 +69,8 @@ class GestorSalasService {
     }
   }
 
-  Future<void> actualizarSala(Sala sala) async{
+  Future<void> actualizarSala(Sala sala) async {
     final _url = Uri.parse("${this.url}/${sala.id}.json");
-    final _response = await http.delete(_url);  }
+    final _response = await http.delete(_url);
+  }
 }
