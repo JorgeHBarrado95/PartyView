@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+import "package:audioplayers/audioplayers.dart";
+>>>>>>> 0f9a673 (Conexion Sala)
 import "package:awesome_snackbar_content/awesome_snackbar_content.dart";
 import "package:flutter/material.dart";
 import "package:party_view/models/Persona.dart";
@@ -44,9 +48,16 @@ class ListViewSala extends StatelessWidget {
     );
   }
 
+<<<<<<< HEAD
   void conectarSala(BuildContext context, Sala sala) {
     final _salaProvider = Provider.of<SalaProvider>(context, listen: false);
     //final player = AudioPlayer();
+=======
+  //Cuando el usuario hace click en la sala, comprueba q exista, comprueba si hay sitio y si hay se añade a la sala (Modifica la bd)
+  //Si no hay sitio, muestra un snackbar
+  void conectarSala(BuildContext context, Sala sala) {
+    final _salaProvider = Provider.of<SalaProvider>(context, listen: false);
+>>>>>>> 0f9a673 (Conexion Sala)
     _salaProvider.setSala(sala);
 
     GestorSalasService _gestorSalasService = GestorSalasService();
@@ -84,8 +95,11 @@ class ListViewSala extends StatelessWidget {
                           "Error al meterte en la sala",
                         ),
                       );
+<<<<<<< HEAD
                     //await player.play(AssetSource("sounds/notification.mp3"));
 
+=======
+>>>>>>> 0f9a673 (Conexion Sala)
                   });
             } else {
               ScaffoldMessenger.of(context)
@@ -94,9 +108,14 @@ class ListViewSala extends StatelessWidget {
                   CustomSnackbar.error(
                     "¡Error!",
                     "La sala está llena tete!!!!!!",
+<<<<<<< HEAD
                   ),
                 );
               //await player.play(AssetSource("sounds/notification.mp3"));
+=======
+                  ) as SnackBar,
+                );
+>>>>>>> 0f9a673 (Conexion Sala)
             }
           }
         })
@@ -108,9 +127,14 @@ class ListViewSala extends StatelessWidget {
               CustomSnackbar.error(
                 "¡Error!",
                 "Algo salió mal al realizar la acción.",
+<<<<<<< HEAD
               ),
             );
           //await player.play(AssetSource("sounds/notification.mp3"));
+=======
+              ) as SnackBar,
+            );
+>>>>>>> 0f9a673 (Conexion Sala)
         });
   }
 }
