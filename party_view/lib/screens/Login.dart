@@ -8,7 +8,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  // Controladores para los campos de texto
+  /// Controladores para los campos de texto
   final TextEditingController _correoController = TextEditingController(
     text: "jorgehbarrado@gmail.com",
   );

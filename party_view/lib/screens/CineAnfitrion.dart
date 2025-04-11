@@ -6,7 +6,7 @@ import 'package:party_view/models/Sala.dart';
 import 'package:party_view/provider/SalaProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:party_view/models/Persona.dart';
-import 'dart:io'; // Importa dart:io para usar Platform
+import 'dart:io';
 
 class CineAnfitrion extends StatefulWidget {
   const CineAnfitrion({super.key});
@@ -20,12 +20,14 @@ class _CineAnfitrionState extends State<CineAnfitrion> {
   bool _inicializado = false;
 
   @override
+  ///Llama a didChangeDependencies cuando el widget se inserta en el árbol de widgets.
   void didChangeDependencies() {
-    //Llama a didChangeDependencies cuando el widget se inserta en el árbol de widgets
     super.didChangeDependencies();
     if (!_inicializado) {
       salaProvider = Provider.of<SalaProvider>(context, listen: true);
-      _onScreenOpened(); //Detecta cuando se abre la ventana
+      _onScreenOpened();
+
+      ///Detecta cuando se abre la ventana por primera vez[_inicializado].
       _inicializado = true;
     }
   }
@@ -37,11 +39,14 @@ class _CineAnfitrionState extends State<CineAnfitrion> {
   }
 
   @override
+  ///Detecta cuando se cierra la ventana y llama a el metodo [_onScreenClosed].
+  ///Llama a super.dispose() para asegurarse de que se liberen los recursos utilizados por el widget.
   void dispose() {
-    _onScreenClosed(); //Llama al método cuando se cierra la pantalla
+    _onScreenClosed();
     super.dispose();
   }
 
+  ///Usa el el metodo [removeSalas] para eliminar la sala de la base de datos.
   void _onScreenClosed() {
     GestorSalasService().removeSalas(salaProvider.sala!.id);
     salaProvider.detenerTimer();
@@ -89,23 +94,23 @@ class Body extends StatelessWidget {
   }
 }
 
-//LIST VIEW DE LOS INVITADOS
+///List View de los invitados.
 class ListaInvitados extends StatelessWidget {
   const ListaInvitados({super.key});
 
   @override
   Widget build(BuildContext context) {
     final _salaProvider = Provider.of<SalaProvider>(context, listen: true);
-    final invitados = _salaProvider.sala?.invitados ?? [];
+    final invitados = _salaProvider.sala?.invitados ?? []; //Si esta vacío el array, devuelve una lista vacía.
 
-    if (invitados.isEmpty) {
+    if (invitados.isEmpty) { 
       return Center(child: Text("No hay invitados disponibles"));
     }
 
     return Expanded(child: ListViewInvitados(invitados: invitados));
   }
 }
-
+///El [menuArriba] es el menu de la parte superior de la pantalla donde aparece el id, la capacidad y el estado de la sala.
 class MenuArriba extends StatefulWidget {
   const MenuArriba({super.key});
 
@@ -145,7 +150,7 @@ class _MenuArribaState extends State<MenuArriba> {
                     }
                   }(), style: TextStyle(fontSize: 16)),
                   SizedBox(width: 10),
-                  ElevatedButton(
+                  ElevatedButton( /// Botón para aumentar la capacidad
                     onPressed: () {
                       _salaProvider.incrementarCapacidad();
                       print("Incrementar capacidad");
@@ -156,7 +161,7 @@ class _MenuArribaState extends State<MenuArriba> {
                     ),
                     child: Icon(Icons.add, size: 20),
                   ),
-                  ElevatedButton(
+                  ElevatedButton( /// Botón para disminuir la capacidad
                     onPressed: () {
                       _salaProvider.disminuirCapacidad();
                       print("Reducir capacidad");
