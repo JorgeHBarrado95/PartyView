@@ -6,11 +6,11 @@ class Persona {
 
   Persona({required this.nombre, required this.ip});
 
-  Map<String, dynamic> toJson() {
-    return {"nombre": nombre, "ip": ip};
+  factory Persona.fromJson(Map<String, dynamic> json) {
+    return Persona(ip: json["ip"], nombre: json["nombre"]);
   }
 
-  factory Persona.fromJson(Map<String, dynamic> json) {
-    return Persona(nombre: json["nombre"], ip: json["ip"]);
+  Map<String, dynamic> toJson() {
+    return {"ip": ip, "nombre": nombre};
   }
 }
