@@ -67,27 +67,36 @@ class ListViewSala extends StatelessWidget {
           //print(value);
           if (value.id == sala.id) {
             if (_salaProvider.sala!.estado == "Abierto") {
-              if (_salaProvider.sala!.invitados.length < //Limite de invitados
-                  _salaProvider.sala!.capacidad) {
-                //print("conectado y hay sitio");
-                Navigator.pushNamed(context, "/cineInvitado");
+              Persona _persona = Persona(
+                //Crea el invitado
+                nombre: Authservice().getDisplayName() ?? "Desconocido",
+                ip: await _salaProvider.getIpAddress(),
+              );
 
-                Persona _persona = Persona(
-                  //Crea el invitado
-                  nombre: Authservice().getDisplayName() ?? "Desconocido",
-                  ip: await _salaProvider.getIpAddress(),
-                );
+              // Verifica que la persona NO esté en la lista de bloqueados
+              if (_salaProvider.sala!.bloqueados
+                  .where(
+                    (persona) =>
+                        persona.ip == _persona.ip &&
+                        persona.nombre == _persona.nombre,
+                  )
+                  .isEmpty) {
+                if (_salaProvider.sala!.invitados.length < //Limite de invitados
+                    _salaProvider.sala!.capacidad) {
+                  //print("conectado y hay sitio");
+                  Navigator.pushNamed(context, "/cineInvitado");
 
-                sala.invitados.add(_persona); //Añade el invitado a la sala
+                  sala.invitados.add(_persona); //Añade el invitado a la sala
 
-                _gestorSalasService //Modifica la sala en la bd
-                    .addSala(sala)
-                    .then((value) {
-                      print("Añadido a la sala");
-                    })
-                    .catchError((error) async {
-                      print("Error al añadir a la sala: $error");
+                  _gestorSalasService //Modifica la sala en la bd
+                      .addSala(sala)
+                      .then((value) {
+                        print("Añadido a la sala");
+                      })
+                      .catchError((error) async {
+                        print("Error al añadir a la sala: $error");
 
+<<<<<<< HEAD
 <<<<<<< HEAD
                     ScaffoldMessenger.of(context)
                       ..hideCurrentSnackBar()
@@ -114,16 +123,38 @@ class ListViewSala extends StatelessWidget {
                           ),
                         );
                     });
+=======
+                        ScaffoldMessenger.of(context)
+                          ..hideCurrentSnackBar()
+                          ..showSnackBar(
+                            CustomSnackbar.aprobacion(
+                              "Error",
+                              "Error al meterte en la sala",
+                            ),
+                          );
+                      });
+                } else {
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(
+                      CustomSnackbar.error(
+                        "¡Error!",
+                        "La sala está llena tete!!!!!!",
+                      ),
+                    );
+                }
+>>>>>>> 5adf228 (Expulsión y bloqueo)
               } else {
                 ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(
                     CustomSnackbar.error(
                       "¡Error!",
-                      "La sala está llena tete!!!!!!",
+                      "No puedes entrar a la sala, estás bloqueado.",
                     ),
                   );
               }
+<<<<<<< HEAD
             }else{
 >>>>>>> 722d3ca (Fix Cerrado/Abierto Sala)
               ScaffoldMessenger.of(context)
@@ -135,6 +166,13 @@ class ListViewSala extends StatelessWidget {
                     "La sala está llena tete!!!!!!",
 <<<<<<< HEAD
                   ),
+=======
+            } else {
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  CustomSnackbar.error("¡Error!", "La sala está cerrada."),
+>>>>>>> 5adf228 (Expulsión y bloqueo)
                 );
               //await player.play(AssetSource("sounds/notification.mp3"));
 =======
@@ -166,15 +204,15 @@ class ListViewSala extends StatelessWidget {
 =======
                     "¡Error!",
                     "Algo salió mal al realizar la acción.",
+<<<<<<< HEAD
                   )
                   as SnackBar,
 >>>>>>> 722d3ca (Fix Cerrado/Abierto Sala)
+=======
+                  ),
+>>>>>>> 5adf228 (Expulsión y bloqueo)
             );
 >>>>>>> 0f9a673 (Conexion Sala)
         });
   }
 }
-
-// 1º COmprobas q haya un sitio en la lista de invitados y en la cap
-// 2º Añadirse a la bd
-// 3º El anfitrion tiene q detectar q hay alguien en bd copnectado

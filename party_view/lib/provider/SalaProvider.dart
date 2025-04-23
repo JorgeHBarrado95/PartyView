@@ -3,7 +3,6 @@ import 'dart:math';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:party_view/models/Persona.dart';
 import 'package:party_view/models/Sala.dart';
 import 'package:party_view/services/AuthService.dart';
@@ -71,6 +70,7 @@ class SalaProvider with ChangeNotifier {
         ip: await getIpAddress(), // Obtiene la dirección IP del anfitrión.
       ),
       invitados: [],
+      bloqueados: [],
     );
     notifyListeners();
   }
@@ -146,5 +146,18 @@ class SalaProvider with ChangeNotifier {
   /// Detiene el temporizador.
   void detenerTimer() {
     _timer?.cancel();
+  }
+
+  Future<void> eliminarInvitado(Persona persona) async {
+    _sala!.invitados.removeWhere((invitado) => persona == persona);
+    notifyListeners();
+    await _gestorSalasService.addSala(_sala!);
+  }
+
+  Future<void> bloquearPersona(Persona persona) async {
+    _sala!.bloqueados.add(persona);
+    eliminarInvitado(persona);
+    notifyListeners();
+    await _sincronizarBD();
   }
 }

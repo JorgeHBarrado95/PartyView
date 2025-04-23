@@ -7,6 +7,7 @@ class Sala {
   late bool video;
   late Persona anfitrion;
   late List<Persona> invitados;
+  late List<Persona> bloqueados;
 
   Sala({
     required this.id,
@@ -15,6 +16,7 @@ class Sala {
     required this.estado,
     required this.anfitrion,
     required this.invitados,
+    required this.bloqueados,
   });
 
   Map<String, dynamic> toJson() {
@@ -25,6 +27,7 @@ class Sala {
       "estado": estado,
       "anfitrion": anfitrion.toJson(),
       "invitados": invitados.map((invitado) => invitado.toJson()).toList(),
+      "bloqueados": bloqueados.map((invitado) => invitado.toJson()).toList(),
     };
   }
 
@@ -37,6 +40,10 @@ class Sala {
       anfitrion: Persona.fromJson(json["anfitrion"]),
       invitados:
           (json["invitados"] as List? ?? [])
+              .map((invitado) => Persona.fromJson(invitado))
+              .toList(),
+      bloqueados:
+          (json["bloqueados"] as List? ?? [])
               .map((invitado) => Persona.fromJson(invitado))
               .toList(),
     );
