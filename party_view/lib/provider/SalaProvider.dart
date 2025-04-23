@@ -63,7 +63,7 @@ class SalaProvider with ChangeNotifier {
       id: await idSalaComp(), // Genera un ID único para la sala.
       capacidad: 5,
       video: true,
-      estado: "abierto",
+      estado: "Abierto",
       anfitrion: Persona(
         nombre:
             Authservice().getDisplayName() ??

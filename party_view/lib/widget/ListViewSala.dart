@@ -66,27 +66,29 @@ class ListViewSala extends StatelessWidget {
         .then((value) async {
           //print(value);
           if (value.id == sala.id) {
-            if (_salaProvider.sala!.invitados.length < //Limite de invitados
-                _salaProvider.sala!.capacidad) {
-              //print("conectado y hay sitio");
-              Navigator.pushNamed(context, "/cineInvitado");
+            if (_salaProvider.sala!.estado == "Abierto") {
+              if (_salaProvider.sala!.invitados.length < //Limite de invitados
+                  _salaProvider.sala!.capacidad) {
+                //print("conectado y hay sitio");
+                Navigator.pushNamed(context, "/cineInvitado");
 
-              Persona _persona = Persona(
-                //Crea el invitado
-                nombre: Authservice().getDisplayName() ?? "Desconocido",
-                ip: await _salaProvider.getIpAddress(),
-              );
+                Persona _persona = Persona(
+                  //Crea el invitado
+                  nombre: Authservice().getDisplayName() ?? "Desconocido",
+                  ip: await _salaProvider.getIpAddress(),
+                );
 
-              sala.invitados.add(_persona); //Añade el invitado a la sala
+                sala.invitados.add(_persona); //Añade el invitado a la sala
 
-              _gestorSalasService //Modifica la sala en la bd
-                  .addSala(sala)
-                  .then((value) {
-                    print("Añadido a la sala");
-                  })
-                  .catchError((error) async {
-                    print("Error al añadir a la sala: $error");
+                _gestorSalasService //Modifica la sala en la bd
+                    .addSala(sala)
+                    .then((value) {
+                      print("Añadido a la sala");
+                    })
+                    .catchError((error) async {
+                      print("Error al añadir a la sala: $error");
 
+<<<<<<< HEAD
                     ScaffoldMessenger.of(context)
                       ..hideCurrentSnackBar()
                       ..showSnackBar(
@@ -102,11 +104,34 @@ class ListViewSala extends StatelessWidget {
 >>>>>>> 0f9a673 (Conexion Sala)
                   });
             } else {
+=======
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(
+                          CustomSnackbar.aprobacion(
+                            "Error",
+                            "Error al meterte en la sala",
+                          ),
+                        );
+                    });
+              } else {
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    CustomSnackbar.error(
+                      "¡Error!",
+                      "La sala está llena tete!!!!!!",
+                    ),
+                  );
+              }
+            }else{
+>>>>>>> 722d3ca (Fix Cerrado/Abierto Sala)
               ScaffoldMessenger.of(context)
                 ..hideCurrentSnackBar()
                 ..showSnackBar(
                   CustomSnackbar.error(
                     "¡Error!",
+<<<<<<< HEAD
                     "La sala está llena tete!!!!!!",
 <<<<<<< HEAD
                   ),
@@ -114,6 +139,10 @@ class ListViewSala extends StatelessWidget {
               //await player.play(AssetSource("sounds/notification.mp3"));
 =======
                   ) as SnackBar,
+=======
+                    "La sala está cerrada.",
+                  ),
+>>>>>>> 722d3ca (Fix Cerrado/Abierto Sala)
                 );
 >>>>>>> 0f9a673 (Conexion Sala)
             }
@@ -125,6 +154,7 @@ class ListViewSala extends StatelessWidget {
             ..hideCurrentSnackBar()
             ..showSnackBar(
               CustomSnackbar.error(
+<<<<<<< HEAD
                 "¡Error!",
                 "Algo salió mal al realizar la acción.",
 <<<<<<< HEAD
@@ -133,6 +163,12 @@ class ListViewSala extends StatelessWidget {
           //await player.play(AssetSource("sounds/notification.mp3"));
 =======
               ) as SnackBar,
+=======
+                    "¡Error!",
+                    "Algo salió mal al realizar la acción.",
+                  )
+                  as SnackBar,
+>>>>>>> 722d3ca (Fix Cerrado/Abierto Sala)
             );
 >>>>>>> 0f9a673 (Conexion Sala)
         });
