@@ -28,32 +28,22 @@ class GestorSalasService {
     if (response.statusCode != 200) {
       throw Exception("Failed to add sala: ${response.body}");
     }
-
   }
 
-<<<<<<< HEAD
   /// Comprueba si una sala con el ID especificado existe en la base de datos.
   ///
   /// [id] El ID de la sala a comprobar.
   /// Retorna el ID si no existe, o un objeto [Sala] si existe.
   Future<dynamic> comprobarSiExiste(String id) async {
-=======
-  Future<String> comprobarSiExiste(String id) async {
->>>>>>> parent of 3436d3f (EN pruebas)
     final url2 = Uri.parse("${this.url}/${id}.json");
     final response = await http.get(url2);
 
     if (response.body == "null") {
-<<<<<<< HEAD
       // Si la respuesta es null, no existe la sala.
       return id;
     } else {
       final Map<String, dynamic> data = jsonDecode(response.body);
       return Sala.fromJson(id, data); // Convierte el JSON en un objeto Sala.
-=======
-      print("object");
-      return id;
->>>>>>> parent of 3436d3f (EN pruebas)
     }
   }
 
@@ -92,7 +82,6 @@ class GestorSalasService {
     }
   }
 
-<<<<<<< HEAD
   /// Actualiza una sala en la base de datos.
   ///
   /// [sala] La sala que se desea actualizar.
@@ -126,9 +115,4 @@ class GestorSalasService {
 
     return invitados;
   }
-=======
-  Future<void> actualizarSala(Sala sala) async{
-    final _url = Uri.parse("${this.url}/${sala.id}.json");
-    final _response = await http.delete(_url);  }
->>>>>>> parent of 3436d3f (EN pruebas)
 }

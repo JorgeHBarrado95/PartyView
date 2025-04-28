@@ -17,8 +17,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.12.0"
-<<<<<<< HEAD
-=======
   audioplayers:
     dependency: "direct main"
     description:
@@ -75,7 +73,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.2.0"
->>>>>>> 0f9a673 (Conexion Sala)
   awesome_snackbar_content:
     dependency: "direct main"
     description:
@@ -186,24 +183,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_svg
-<<<<<<< HEAD
-<<<<<<< HEAD
       sha256: d44bf546b13025ec7353091516f6881f1d4c633993cb109c3916c3a0159dadf1
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
-=======
-      sha256: c200fd79c918a40c5cd50ea0877fa13f81bdaf6f0a5d3dbcc2a13e3285d6aa1b
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.17"
->>>>>>> 0f9a673 (Conexion Sala)
-=======
-      sha256: d44bf546b13025ec7353091516f6881f1d4c633993cb109c3916c3a0159dadf1
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.0"
->>>>>>> 83ff109 (Actualización dependencias)
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -318,8 +301,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
-<<<<<<< HEAD
-=======
   path_provider:
     dependency: transitive
     description:
@@ -368,7 +349,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.0"
->>>>>>> 0f9a673 (Conexion Sala)
   petitparser:
     dependency: transitive
     description:
@@ -377,8 +357,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.0"
-<<<<<<< HEAD
-=======
   platform:
     dependency: transitive
     description:
@@ -395,7 +373,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.8"
->>>>>>> 0f9a673 (Conexion Sala)
   provider:
     dependency: "direct main"
     description:
@@ -481,8 +458,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
-<<<<<<< HEAD
-=======
   uuid:
     dependency: transitive
     description:
@@ -491,7 +466,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.5.1"
->>>>>>> 0f9a673 (Conexion Sala)
   vector_graphics:
     dependency: transitive
     description:
@@ -540,8 +514,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
-<<<<<<< HEAD
-=======
   xdg_directories:
     dependency: transitive
     description:
@@ -550,7 +522,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
->>>>>>> 0f9a673 (Conexion Sala)
   xml:
     dependency: transitive
     description:
@@ -561,8 +532,4 @@ packages:
     version: "6.5.0"
 sdks:
   dart: ">=3.7.0 <4.0.0"
-<<<<<<< HEAD
-  flutter: ">=3.22.0"
-=======
   flutter: ">=3.27.0"
->>>>>>> 0f9a673 (Conexion Sala)

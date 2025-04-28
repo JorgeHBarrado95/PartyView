@@ -60,7 +60,7 @@ class _CineAnfitrionState extends State<CineAnfitrion> {
         onPressed: () {
           Navigator.pop(context);
         },
-        child: Text("atras"),
+        child: Icon(Icons.arrow_back),
       ),
     );
   }
@@ -101,15 +101,18 @@ class ListaInvitados extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _salaProvider = Provider.of<SalaProvider>(context, listen: true);
-    final invitados = _salaProvider.sala?.invitados ?? []; //Si esta vacío el array, devuelve una lista vacía.
+    final invitados =
+        _salaProvider.sala?.invitados ??
+        []; //Si esta vacío el array, devuelve una lista vacía.
 
-    if (invitados.isEmpty) { 
+    if (invitados.isEmpty) {
       return Center(child: Text("No hay invitados disponibles"));
     }
 
     return Expanded(child: ListViewInvitados(invitados: invitados));
   }
 }
+
 ///El [menuArriba] es el menu de la parte superior de la pantalla donde aparece el id, la capacidad y el estado de la sala.
 class MenuArriba extends StatefulWidget {
   const MenuArriba({super.key});
@@ -150,7 +153,8 @@ class _MenuArribaState extends State<MenuArriba> {
                     }
                   }(), style: TextStyle(fontSize: 16)),
                   SizedBox(width: 10),
-                  ElevatedButton( /// Botón para aumentar la capacidad
+                  ElevatedButton(
+                    /// Botón para aumentar la capacidad
                     onPressed: () {
                       _salaProvider.incrementarCapacidad();
                       print("Incrementar capacidad");
@@ -161,7 +165,8 @@ class _MenuArribaState extends State<MenuArriba> {
                     ),
                     child: Icon(Icons.add, size: 20),
                   ),
-                  ElevatedButton( /// Botón para disminuir la capacidad
+                  ElevatedButton(
+                    /// Botón para disminuir la capacidad
                     onPressed: () {
                       _salaProvider.disminuirCapacidad();
                       print("Reducir capacidad");
