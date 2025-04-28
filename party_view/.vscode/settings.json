@@ -2,5 +2,5 @@
   "cmake.ignoreCMakeListsMissing": true,
   "files.autoSave": "afterDelay",
   "files.autoSaveDelay": 1000,
-  "dart.flutterSdkPath": ".fvm/versions/stable"
+  "dart.flutterSdkPath": ".fvm/versions/3.29.3"
 }
