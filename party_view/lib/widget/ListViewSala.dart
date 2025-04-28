@@ -1,16 +1,15 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 0c0dd42 (Revert "EN pruebas")
 import "package:audioplayers/audioplayers.dart";
 >>>>>>> 0f9a673 (Conexion Sala)
 import "package:awesome_snackbar_content/awesome_snackbar_content.dart";
+=======
+>>>>>>> parent of 3436d3f (EN pruebas)
 import "package:flutter/material.dart";
-import "package:party_view/models/Persona.dart";
 import "package:party_view/models/Sala.dart";
-import "package:party_view/provider/SalaProvider.dart";
-import "package:party_view/services/AuthService.dart";
-import "package:party_view/services/GestorSalasService.dart";
-import "package:party_view/widget/CustomSnackBar.dart";
-import "package:provider/provider.dart";
 
 class ListViewSala extends StatelessWidget {
   const ListViewSala({super.key, required this.salas});
@@ -37,7 +36,10 @@ class ListViewSala extends StatelessWidget {
                   subtitle: Text(
                     "Capacidad max: ${sala.capacidad}, Estado: ${sala.estado}",
                   ),
-                  onTap: () => conectarSala(context, sala),
+                  onTap:
+                      () => print(
+                        "Seleccionaste la sala de ${sala.anfitrion.nombre}",
+                      ),
                 ),
                 Text("Anfitrión: ${sala.anfitrion.nombre}"),
               ],
@@ -47,6 +49,7 @@ class ListViewSala extends StatelessWidget {
       },
     );
   }
+<<<<<<< HEAD
 
 <<<<<<< HEAD
   void conectarSala(BuildContext context, Sala sala) {
@@ -215,4 +218,6 @@ class ListViewSala extends StatelessWidget {
 >>>>>>> 0f9a673 (Conexion Sala)
         });
   }
+=======
+>>>>>>> parent of 3436d3f (EN pruebas)
 }
