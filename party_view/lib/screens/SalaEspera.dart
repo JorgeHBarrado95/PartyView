@@ -8,21 +8,27 @@ import 'package:flutter/material.dart';
 import 'package:party_view/models/Persona.dart';
 import 'dart:io';
 
-class CineAnfitrion extends StatefulWidget {
-  const CineAnfitrion({super.key});
-
+class SalaEspera extends StatefulWidget {
+  const SalaEspera({super.key});
   @override
-  _CineAnfitrionState createState() => _CineAnfitrionState();
+  _SalaEsperaState createState() => _SalaEsperaState();
 }
 
-class _CineAnfitrionState extends State<CineAnfitrion> {
+class _SalaEsperaState extends State<SalaEspera> {
   late SalaProvider salaProvider;
   bool _inicializado = false;
-
+  bool _esAnfitrion = false;
+  Sala? _sala;
   @override
   ///Llama a didChangeDependencies cuando el widget se inserta en el árbol de widgets.
   void didChangeDependencies() {
     super.didChangeDependencies();
+
+    final Map<String, dynamic> args =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    _esAnfitrion = (args is Map<String, dynamic>) ? args["esAnfitrion"] : false;
+    _sala = args["sala"];
+
     if (!_inicializado) {
       salaProvider = Provider.of<SalaProvider>(context, listen: true);
       _onScreenOpened();
@@ -33,9 +39,16 @@ class _CineAnfitrionState extends State<CineAnfitrion> {
   }
 
   Future<void> _onScreenOpened() async {
-    await salaProvider.crearSala();
-    await GestorSalasService().addSala(salaProvider.sala!);
-    salaProvider.iniciarTimer();
+    if (_esAnfitrion) {
+      await salaProvider.crearSala();
+      await GestorSalasService().addSala(salaProvider.sala!);
+      salaProvider.iniciarTimer();
+    } else {
+      Future.delayed(Duration.zero, () {
+        //Uso el future delayed para que no me de error de null
+        salaProvider.setSala(_sala!);
+      });
+    }
   }
 
   @override
@@ -131,6 +144,12 @@ class _MenuArribaState extends State<MenuArriba> {
     final _salaProvider = Provider.of<SalaProvider>(context);
     final _sala = _salaProvider.sala;
 
+    final Object? args = ModalRoute.of(context)!.settings.arguments;
+    final bool esAnfitrion =
+        (args is bool) ? args : false; // Valor predeterminado: false
+
+    ///Si la screen fue abierta por el anfitrion, entonces es true.
+
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,30 +172,32 @@ class _MenuArribaState extends State<MenuArriba> {
                     }
                   }(), style: TextStyle(fontSize: 16)),
                   SizedBox(width: 10),
-                  ElevatedButton(
-                    /// Botón para aumentar la capacidad
-                    onPressed: () {
-                      _salaProvider.incrementarCapacidad();
-                      print("Incrementar capacidad");
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: CircleBorder(),
-                      padding: EdgeInsets.all(10),
+                  if (esAnfitrion)
+                    ElevatedButton(
+                      /// Botón para aumentar la capacidad
+                      onPressed: () {
+                        _salaProvider.incrementarCapacidad();
+                        print("Incrementar capacidad");
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: CircleBorder(),
+                        padding: EdgeInsets.all(10),
+                      ),
+                      child: Icon(Icons.add, size: 20),
                     ),
-                    child: Icon(Icons.add, size: 20),
-                  ),
-                  ElevatedButton(
-                    /// Botón para disminuir la capacidad
-                    onPressed: () {
-                      _salaProvider.disminuirCapacidad();
-                      print("Reducir capacidad");
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: CircleBorder(),
-                      padding: EdgeInsets.all(10),
+                  if (esAnfitrion) //Pongo aqui otro if porq al darle cntr + s me lo saca del if
+                    ElevatedButton(
+                      /// Botón para disminuir la capacidad
+                      onPressed: () {
+                        _salaProvider.disminuirCapacidad();
+                        print("Reducir capacidad");
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: CircleBorder(),
+                        padding: EdgeInsets.all(10),
+                      ),
+                      child: Icon(Icons.remove, size: 20),
                     ),
-                    child: Icon(Icons.remove, size: 20),
-                  ),
                 ],
               ),
             ],
@@ -196,12 +217,15 @@ class _MenuArribaState extends State<MenuArriba> {
                         child: Text(estado),
                       );
                     }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedEstado = newValue!;
-                    _salaProvider.estado(_selectedEstado);
-                  });
-                },
+                onChanged:
+                    esAnfitrion
+                        ? (String? newValue) {
+                          setState(() {
+                            _selectedEstado = newValue!;
+                            _salaProvider.estado(_selectedEstado);
+                          });
+                        }
+                        : null,
               ),
             ],
           ),

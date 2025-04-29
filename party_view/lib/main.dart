@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:party_view/provider/SalaProvider.dart';
-import 'package:party_view/screens/CineAnfitrion.dart';
-import 'package:party_view/screens/CineInvitado.dart';
+import 'package:party_view/screens/SalaEspera.dart';
 import 'package:party_view/screens/Login.dart';
 import 'package:party_view/screens/Principal.dart';
 import 'package:provider/provider.dart';
@@ -21,8 +20,7 @@ class MyApp extends StatelessWidget {
       routes: {
         "/login": (context) => Login(),
         "/principal": (context) => Principal(),
-        "/cineAnfitrion": (context) => CineAnfitrion(),
-        "/cineInvitado": (context) => Cineinvitado(),
+        "/salaEspera": (context) => SalaEspera(),
       },
     );
   }

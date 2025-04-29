@@ -62,8 +62,13 @@ class _PrincipalState extends State<Principal> {
                 ),
                 SizedBox(height: 16),
                 FloatingActionButton(
+                  //Crear sala
                   onPressed: () {
-                    Navigator.pushNamed(context, "/cineAnfitrion");
+                    Navigator.pushNamed(
+                      context,
+                      "/salaEspera",
+                      arguments: {"sala": null, "esAnfitrion": false}, // Corregido
+                    );
                   },
                   child: Icon(Icons.add),
                   heroTag: "add",

@@ -32,10 +32,14 @@ class ListViewSala extends StatelessWidget {
                   subtitle: Text(
                     "Capacidad max: ${sala.capacidad}, Estado: ${sala.estado}",
                   ),
-                  onTap:
-                      () => print(
-                        "Seleccionaste la sala de ${sala.anfitrion.nombre}",
-                      ),
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      "/salaEspera",
+                      arguments:
+                          sala, // Pasar la sala seleccionada como argumento
+                    );
+                  },
                 ),
                 Text("Anfitrión: ${sala.anfitrion.nombre}"),
               ],
@@ -70,7 +74,7 @@ class ListViewSala extends StatelessWidget {
               .isEmpty) {
             if (_salaProvider.sala!.invitados.length <
                 _salaProvider.sala!.capacidad) {
-              Navigator.pushNamed(context, "/cineInvitado");
+              Navigator.pushNamed(context, "/salaEspera", arguments: false);
 
               sala.invitados.add(_persona); // Añade el invitado a la sala
 
