@@ -5,8 +5,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:party_view/models/Persona.dart';
 import 'package:party_view/models/Sala.dart';
-import 'package:party_view/services/AuthService.dart';
+import 'package:party_view/provider/PersonaProvider.dart';
 import 'package:party_view/services/GestorSalasService.dart';
+import 'package:provider/provider.dart';
 
 /// Proveedor que gestiona el estado de una sala y su sincronización con la base de datos.
 class SalaProvider with ChangeNotifier {
@@ -57,18 +58,13 @@ class SalaProvider with ChangeNotifier {
   }
 
   /// Crea una nueva sala con un ID aleatorio y configura sus valores iniciales.
-  Future<void> crearSala() async {
+  Future<void> crearSala(Persona persona) async {
     _sala = Sala(
       id: await idSalaComp(), // Genera un ID único para la sala.
       capacidad: 5,
       video: true,
       estado: "Abierto",
-      anfitrion: Persona(
-        nombre:
-            Authservice().getDisplayName() ??
-            "Desconocido", // Obtiene el nombre del anfitrión.
-        ip: await getIpAddress(), // Obtiene la dirección IP del anfitrión.
-      ),
+      anfitrion: persona,
       invitados: [],
       bloqueados: [],
     );
@@ -97,35 +93,9 @@ class SalaProvider with ChangeNotifier {
     return _randIdString;
   }
 
-  /// Obtiene la dirección IP del dispositivo.
-  ///
-  /// Retorna un [String] con la dirección IP o "null" si no se encuentra.
-  Future<String> getIpAddress() async {
-    try {
-      final interfaces = await NetworkInterface.list(
-        type: InternetAddressType.IPv4, // Solo direcciones IPv4.
-        includeLoopback: false, // Excluye direcciones de loopback.
-      );
-
-      for (var interface in interfaces) {
-        for (var address in interface.addresses) {
-          if (!address.isLoopback) {
-            return address.address; // Devuelve la primera dirección IP válida.
-          }
-        }
-      }
-    } catch (e) {
-      print("Error al obtener la dirección IP: $e");
-    }
-
-    return "null"; // Devuelve "null" si no se encuentra una dirección IP.
-  }
-
   /// Sincroniza la sala actual con la base de datos.
   Future<void> _sincronizarBD() async {
-    await _gestorSalasService.addSala(
-      _sala!,
-    ); //Uso el metodo con el q creo la sala, porq hace lo mismo
+    await _gestorSalasService.actualizarSala(_sala!);
   }
 
   /// Obtiene la lista de invitados de la sala desde la base de datos.
@@ -149,15 +119,16 @@ class SalaProvider with ChangeNotifier {
   }
 
   Future<void> eliminarInvitado(Persona persona) async {
-    _sala!.invitados.removeWhere((invitado) => persona == persona);
-    notifyListeners();
-    await _gestorSalasService.addSala(_sala!);
+    _sala!.invitados.removeWhere((invitado) => invitado == persona);
+    await _gestorSalasService.actualizarSala(_sala!);
+    Future.microtask(
+      () => notifyListeners(),
+    ); // se asegura que se ejecute después
   }
 
   Future<void> bloquearPersona(Persona persona) async {
     _sala!.bloqueados.add(persona);
     eliminarInvitado(persona);
-    notifyListeners();
     await _sincronizarBD();
   }
 }

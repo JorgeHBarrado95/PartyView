@@ -2,14 +2,21 @@ import "dart:convert";
 import "dart:math";
 
 import "package:http/http.dart" as http;
+import "package:party_view/models/Persona.dart";
 import "package:party_view/models/Usuario.dart";
+import "package:party_view/provider/PersonaProvider.dart";
 import "package:party_view/services/AuthService.dart";
+import "package:provider/provider.dart";
 
 import "../models/Usuario.dart";
 import "AuthService.dart";
 
 /// Servicio que gestiona el registro y login de usuarios utilizando Firebase Authentication, enviando y recibiendo peticiones HTTP.
 class Loginservice {
+  final PersonaProvider personaProvider;
+
+  Loginservice(this.personaProvider);
+
   /// URL para registrar un nuevo usuario.
   final urlRegister = Uri.parse(
     "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCR6r9ZgSdyXUYWmQOzATl2MQYW8EASsoE",
@@ -62,7 +69,7 @@ class Loginservice {
 
       if (response2.statusCode == 200) {
         await Authservice().saveToken(jsonDecode(response.body)["idToken"]);
-        await Authservice().saveDisplayName(usuario.displayName!);
+        await personaProvider.crearPersona(usuario.displayName!);
         return 0; // Registro exitoso.
       } else {
         return 2; // Error desconocido.
@@ -92,15 +99,25 @@ class Loginservice {
       }),
     );
 
+    //print("Response status: ${response.statusCode}");
+    //print("Response body: ${response.body}");
+
     if (response.statusCode == 400) {
+      print("Error: Contraseña o correo incorrecto");
       return 1; // Error en la contraseña o correo electrónico.
     } else if (response.statusCode == 200) {
-      // Inicio de sesión exitoso, guarda el nombre de usuario.
-      await Authservice().saveDisplayName(
-        jsonDecode(response.body)["displayName"],
-      );
+      print("Inicio de sesión exitoso");
+
+      // Actualiza el displayName del usuario con el valor recibido del servidor.
+      final responseData = jsonDecode(response.body);
+      usuario.displayName = responseData["displayName"];
+
+      // Usa el provider inyectado.
+      await personaProvider.crearPersona(usuario.displayName!);
+      //print(personaProvider.getPersona.toString());
       return 0; // Inicio de sesión exitoso.
     } else {
+      print("Error desconocido");
       return 2; // Error desconocido.
     }
   }

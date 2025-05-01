@@ -48,4 +48,15 @@ class Sala {
               .toList(),
     );
   }
+
+  @override
+  String toString() {
+    // Aquí representamos los invitados de una forma legible
+    String invitadosStr =
+        invitados.isEmpty
+            ? "No hay invitados"
+            : invitados.map((invitado) => invitado.nombre).join(", ");
+
+    return 'Sala{id: $id, estado: $estado, capacidad: $capacidad, video: $video, anfitrion: ${anfitrion.nombre}, invitados: [$invitadosStr]}';
+  }
 }

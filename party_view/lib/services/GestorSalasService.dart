@@ -40,7 +40,7 @@ class GestorSalasService {
 
     if (response.body == "null") {
       // Si la respuesta es null, no existe la sala.
-      return id;
+      return 0;
     } else {
       final Map<String, dynamic> data = jsonDecode(response.body);
       return Sala.fromJson(id, data); // Convierte el JSON en un objeto Sala.
@@ -88,7 +88,11 @@ class GestorSalasService {
   /// Actualmente, este método elimina la sala en lugar de actualizarla.
   Future<void> actualizarSala(Sala sala) async {
     final _url = Uri.parse("${this.url}/${sala.id}.json");
-    final _response = await http.delete(_url);
+    final response = await http.patch(
+      _url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(sala.toJson()),
+    );
   }
 
   /// Obtiene la lista de invitados de una sala específica.

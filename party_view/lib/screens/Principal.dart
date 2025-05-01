@@ -1,9 +1,11 @@
 import "package:flutter/material.dart";
 
 import 'package:party_view/models/Sala.dart';
+import 'package:party_view/provider/PersonaProvider.dart';
 import 'package:party_view/services/AuthService.dart';
 import 'package:party_view/services/GestorSalasService.dart';
 import 'package:party_view/widget/ListViewSala.dart';
+import 'package:provider/provider.dart';
 
 class Principal extends StatefulWidget {
   Principal({super.key});
@@ -23,6 +25,11 @@ class _PrincipalState extends State<Principal> {
 
   @override
   Widget build(BuildContext context) {
+    // final personaProvider = Provider.of<PersonaProvider>(
+    //   context,
+    //   listen: false,
+    // );
+    // print(personaProvider.getPersona.toString());
     return Scaffold(
       body: Stack(
         children: [
@@ -67,7 +74,7 @@ class _PrincipalState extends State<Principal> {
                     Navigator.pushNamed(
                       context,
                       "/salaEspera",
-                      arguments: {"sala": null, "esAnfitrion": false}, // Corregido
+                      arguments: {"sala": null, "esAnfitrion": true},
                     );
                   },
                   child: Icon(Icons.add),

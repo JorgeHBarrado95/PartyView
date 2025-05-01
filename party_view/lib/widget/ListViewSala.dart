@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:party_view/models/Sala.dart";
+import "package:party_view/provider/PersonaProvider.dart";
 import "package:party_view/provider/SalaProvider.dart";
 import "package:party_view/widget/CustomSnackBar.dart";
 import "package:provider/provider.dart";
@@ -33,12 +34,7 @@ class ListViewSala extends StatelessWidget {
                     "Capacidad max: ${sala.capacidad}, Estado: ${sala.estado}",
                   ),
                   onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      "/salaEspera",
-                      arguments:
-                          sala, // Pasar la sala seleccionada como argumento
-                    );
+                    conectarSala(context, sala);
                   },
                 ),
                 Text("Anfitrión: ${sala.anfitrion.nombre}"),
@@ -52,34 +48,52 @@ class ListViewSala extends StatelessWidget {
 
   void conectarSala(BuildContext context, Sala sala) async {
     final _salaProvider = Provider.of<SalaProvider>(context, listen: false);
-    _salaProvider.setSala(sala);
 
     GestorSalasService _gestorSalasService = GestorSalasService();
     try {
-      final value = await _gestorSalasService.comprobarSiExiste(sala.id);
-      if (value.id == sala.id) {
+      final _posibleSala = await _gestorSalasService.comprobarSiExiste(sala.id);
+      if (_posibleSala is Sala) {
+        _salaProvider.setSala(_posibleSala);
+        //Se comprueba q exista la sala todavia
         if (_salaProvider.sala!.estado == "Abierto") {
-          Persona _persona = Persona(
-            nombre: Authservice().getDisplayName() ?? "Desconocido",
-            ip: await _salaProvider.getIpAddress(),
+          final _personaProvider = Provider.of<PersonaProvider>(
+            context,
+            listen: false,
           );
 
           // Verifica que la persona NO esté en la lista de bloqueados
           if (_salaProvider.sala!.bloqueados
               .where(
                 (persona) =>
-                    persona.ip == _persona.ip &&
-                    persona.nombre == _persona.nombre,
+                    persona.ip == _personaProvider.getPersona?.ip &&
+                    persona.nombre == _personaProvider.getPersona?.nombre,
               )
               .isEmpty) {
             if (_salaProvider.sala!.invitados.length <
                 _salaProvider.sala!.capacidad) {
-              Navigator.pushNamed(context, "/salaEspera", arguments: false);
-
-              sala.invitados.add(_persona); // Añade el invitado a la sala
+              Navigator.pushNamed(
+                context,
+                "/salaEspera",
+                arguments: {"sala": sala, "esAnfitrion": false},
+              );
+              if (_personaProvider.getPersona != null) {
+                _salaProvider.sala!.invitados.add(
+                  _personaProvider.getPersona!,
+                ); // Añade el invitado a la sala
+              } else {
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    CustomSnackbar.error(
+                      "¡Error!",
+                      "No se pudo añadir a la sala. Se ha detectado un error interno.",
+                    ),
+                  );
+                return;
+              }
 
               try {
-                await _gestorSalasService.addSala(sala);
+                await _gestorSalasService.actualizarSala(_salaProvider.sala!);
                 print("Añadido a la sala");
               } catch (error) {
                 print("Error al añadir a la sala: $error");

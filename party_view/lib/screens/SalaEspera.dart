@@ -1,3 +1,4 @@
+import 'package:party_view/provider/PersonaProvider.dart';
 import 'package:party_view/widget/ListViewInvitados.dart';
 import 'package:provider/provider.dart';
 import 'package:party_view/services/GestorSalasService.dart';
@@ -16,6 +17,7 @@ class SalaEspera extends StatefulWidget {
 
 class _SalaEsperaState extends State<SalaEspera> {
   late SalaProvider salaProvider;
+  late PersonaProvider personaProvider;
   bool _inicializado = false;
   bool _esAnfitrion = false;
   Sala? _sala;
@@ -31,6 +33,7 @@ class _SalaEsperaState extends State<SalaEspera> {
 
     if (!_inicializado) {
       salaProvider = Provider.of<SalaProvider>(context, listen: true);
+      personaProvider = Provider.of<PersonaProvider>(context, listen: false);
       _onScreenOpened();
 
       ///Detecta cuando se abre la ventana por primera vez[_inicializado].
@@ -40,15 +43,15 @@ class _SalaEsperaState extends State<SalaEspera> {
 
   Future<void> _onScreenOpened() async {
     if (_esAnfitrion) {
-      await salaProvider.crearSala();
+      await salaProvider.crearSala(personaProvider.getPersona!);
       await GestorSalasService().addSala(salaProvider.sala!);
-      salaProvider.iniciarTimer();
     } else {
       Future.delayed(Duration.zero, () {
         //Uso el future delayed para que no me de error de null
         salaProvider.setSala(_sala!);
       });
     }
+    salaProvider.iniciarTimer();
   }
 
   @override
@@ -61,12 +64,19 @@ class _SalaEsperaState extends State<SalaEspera> {
 
   ///Usa el el metodo [removeSalas] para eliminar la sala de la base de datos.
   void _onScreenClosed() {
-    GestorSalasService().removeSalas(salaProvider.sala!.id);
+    if (_esAnfitrion) {
+      GestorSalasService().removeSalas(salaProvider.sala!.id);
+    } else {
+      salaProvider.eliminarInvitado(
+        personaProvider.getPersona!,
+      ); //Por algun motivo el proveeder es null
+    }
     salaProvider.detenerTimer();
   }
 
   @override
   Widget build(BuildContext context) {
+    ///Boton de salida
     return Scaffold(
       body: Body(),
       floatingActionButton: FloatingActionButton(

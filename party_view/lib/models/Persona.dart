@@ -13,4 +13,8 @@ class Persona {
   Map<String, dynamic> toJson() {
     return {"ip": ip, "nombre": nombre};
   }
+
+  String toString() {
+    return "Persona(nombre: $nombre, ip: $ip)";
+  }
 }
