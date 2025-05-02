@@ -78,7 +78,7 @@ class _SalaEsperaState extends State<SalaEspera> {
   Widget build(BuildContext context) {
     ///Boton de salida
     return Scaffold(
-      body: Body(),
+      body: Body(esAnfitrion: _esAnfitrion),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.pop(context);
@@ -90,14 +90,16 @@ class _SalaEsperaState extends State<SalaEspera> {
 }
 
 class Body extends StatelessWidget {
-  const Body({super.key});
+  const Body({super.key, required this.esAnfitrion});
+
+  final bool esAnfitrion;
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
         child: Column(
-          children: [MenuArriba(), SizedBox(height: 20), ListaInvitados()],
+          children: [MenuArriba(), SizedBox(height: 20), ListaInvitados(esAnfitrion: esAnfitrion)],
         ),
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
@@ -119,20 +121,26 @@ class Body extends StatelessWidget {
 
 ///List View de los invitados.
 class ListaInvitados extends StatelessWidget {
-  const ListaInvitados({super.key});
+  const ListaInvitados({super.key, required this.esAnfitrion});
+
+  final bool esAnfitrion;
 
   @override
   Widget build(BuildContext context) {
     final _salaProvider = Provider.of<SalaProvider>(context, listen: true);
     final invitados =
-        _salaProvider.sala?.invitados ??
-        []; //Si esta vacío el array, devuelve una lista vacía.
+        _salaProvider.sala?.invitados ?? []; //Si esta vacío el array, devuelve una lista vacía.
 
     if (invitados.isEmpty) {
       return Center(child: Text("No hay invitados disponibles"));
     }
 
-    return Expanded(child: ListViewInvitados(invitados: invitados));
+    return Expanded(
+      child: ListViewInvitados(
+        invitados: invitados,
+        esAnfitrion: esAnfitrion,
+      ),
+    );
   }
 }
 

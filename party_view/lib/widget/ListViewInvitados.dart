@@ -5,13 +5,17 @@ import "package:party_view/widget/CustomSnackBar.dart";
 import "package:provider/provider.dart";
 
 class ListViewInvitados extends StatelessWidget {
-  const ListViewInvitados({super.key, required this.invitados});
+  const ListViewInvitados({
+    super.key,
+    required this.invitados,
+    required this.esAnfitrion,
+  });
 
   final List<Persona> invitados;
+  final bool esAnfitrion;
 
   @override
   Widget build(BuildContext context) {
-    // Obtiene el proveedor de sala sin escuchar cambios
     final _salaProvider = Provider.of<SalaProvider>(context, listen: true);
 
     return ListView.builder(
@@ -19,52 +23,57 @@ class ListViewInvitados extends StatelessWidget {
       itemBuilder: (context, index) {
         final invitado = invitados[index];
         return Card(
-          margin: EdgeInsets.all(10), //Con las demas card
+          margin: const EdgeInsets.all(10),
           child: Container(
-            margin: EdgeInsets.all(10), //Con el borde del card
+            margin: const EdgeInsets.all(10),
             child: Column(
               children: [
                 ListTile(
-                  leading: CircleAvatar(
-                    child: Text(invitado.nombre[0]),
-                  ), // Primera letra del nombre del invitado
+                  leading: CircleAvatar(child: Text(invitado.nombre[0])),
                   title: Text("Invitado: #${invitado.ip}"),
                   subtitle: Text("Nombre: ${invitado.nombre}"),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.person_remove),
-                        onPressed: () {
-                          _salaProvider.eliminarInvitado(invitado);
-
-                          ScaffoldMessenger.of(context)
-                            ..hideCurrentSnackBar()
-                            ..showSnackBar(
-                              CustomSnackbar.info(
-                                "!Se ha expulsado a ${invitado.nombre}!",
-                                "",
+                  trailing:
+                      esAnfitrion
+                          ? Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.person_remove),
+                                onPressed: () async {
+                                  await _salaProvider.eliminarInvitado(
+                                    invitado,
+                                  );
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context)
+                                      ..hideCurrentSnackBar()
+                                      ..showSnackBar(
+                                        CustomSnackbar.info(
+                                          "!Se ha expulsado a ${invitado.nombre}!",
+                                          "",
+                                        ),
+                                      );
+                                  }
+                                },
                               ),
-                            );
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.block), // Bloquear persona de la sala
-                        onPressed: () {
-                          _salaProvider.bloquearPersona(invitado);
-
-                          ScaffoldMessenger.of(context)
-                            ..hideCurrentSnackBar()
-                            ..showSnackBar(
-                              CustomSnackbar.info(
-                                "!${invitado.nombre} ha sido bloqueado!",
-                                "",
+                              IconButton(
+                                icon: const Icon(Icons.block),
+                                onPressed: () async {
+                                  await _salaProvider.bloquearPersona(invitado);
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context)
+                                      ..hideCurrentSnackBar()
+                                      ..showSnackBar(
+                                        CustomSnackbar.info(
+                                          "!${invitado.nombre} ha sido bloqueado!",
+                                          "",
+                                        ),
+                                      );
+                                  }
+                                },
                               ),
-                            );
-                        },
-                      ),
-                    ],
-                  ),
+                            ],
+                          )
+                          : null,
                 ),
               ],
             ),
