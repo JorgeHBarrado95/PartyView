@@ -1,11 +1,8 @@
 import "package:flutter/material.dart";
 
 import 'package:party_view/models/Sala.dart';
-import 'package:party_view/provider/PersonaProvider.dart';
-import 'package:party_view/services/AuthService.dart';
 import 'package:party_view/services/GestorSalasService.dart';
 import 'package:party_view/widget/ListViewSala.dart';
-import 'package:provider/provider.dart';
 
 class Principal extends StatefulWidget {
   Principal({super.key});

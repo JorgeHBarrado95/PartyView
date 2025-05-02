@@ -2,12 +2,10 @@ import 'package:party_view/provider/PersonaProvider.dart';
 import 'package:party_view/widget/ListViewInvitados.dart';
 import 'package:provider/provider.dart';
 import 'package:party_view/services/GestorSalasService.dart';
-import 'package:party_view/services/AuthService.dart';
 import 'package:party_view/models/Sala.dart';
 import 'package:party_view/provider/SalaProvider.dart';
 import 'package:flutter/material.dart';
-import 'package:party_view/models/Persona.dart';
-import 'dart:io';
+
 
 class SalaEspera extends StatefulWidget {
   const SalaEspera({super.key});

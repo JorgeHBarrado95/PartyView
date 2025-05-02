@@ -1,15 +1,9 @@
 import "dart:convert";
-import "dart:math";
-
 import "package:http/http.dart" as http;
-import "package:party_view/models/Persona.dart";
 import "package:party_view/models/Usuario.dart";
 import "package:party_view/provider/PersonaProvider.dart";
 import "package:party_view/services/AuthService.dart";
-import "package:provider/provider.dart";
 
-import "../models/Usuario.dart";
-import "AuthService.dart";
 
 /// Servicio que gestiona el registro y login de usuarios utilizando Firebase Authentication, enviando y recibiendo peticiones HTTP.
 class Loginservice {

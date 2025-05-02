@@ -5,8 +5,6 @@ import "package:party_view/provider/SalaProvider.dart";
 import "package:party_view/widget/CustomSnackBar.dart";
 import "package:provider/provider.dart";
 import "package:party_view/services/GestorSalasService.dart";
-import "package:party_view/services/AuthService.dart";
-import "package:party_view/models/Persona.dart";
 
 class ListViewSala extends StatelessWidget {
   const ListViewSala({super.key, required this.salas});

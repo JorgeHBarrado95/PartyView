@@ -1,13 +1,10 @@
-import 'dart:io';
 import 'dart:math';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:party_view/models/Persona.dart';
 import 'package:party_view/models/Sala.dart';
-import 'package:party_view/provider/PersonaProvider.dart';
 import 'package:party_view/services/GestorSalasService.dart';
-import 'package:provider/provider.dart';
 
 /// Proveedor que gestiona el estado de una sala y su sincronización con la base de datos.
 class SalaProvider with ChangeNotifier {

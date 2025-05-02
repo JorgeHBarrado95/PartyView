@@ -1,4 +1,3 @@
-import 'dart:io';
 
 class Persona {
   late String nombre;

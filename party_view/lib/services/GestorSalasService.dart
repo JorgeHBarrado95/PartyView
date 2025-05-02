@@ -1,11 +1,7 @@
 import "dart:convert";
-import "dart:io";
-import "dart:math";
-
 import "package:http/http.dart" as http;
 import "package:party_view/models/Persona.dart";
 import "package:party_view/models/Sala.dart";
-import "package:party_view/services/AuthService.dart";
 
 /// Servicio que gestiona las operaciones relacionadas con las salas en la base de datos.
 class GestorSalasService {

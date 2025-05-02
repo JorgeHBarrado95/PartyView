@@ -1,4 +1,3 @@
-import "dart:ffi";
 
 class Usuario { //Es solo pa el login
   String email;
