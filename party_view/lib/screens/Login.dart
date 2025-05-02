@@ -1,6 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:party_view/models/Usuario.dart';
-import 'package:party_view/services/LoginService.dart';
+import "package:flutter/material.dart";
+import "package:party_view/models/Usuario.dart";
+import "package:party_view/provider/PersonaProvider.dart";
+import "package:party_view/services/LoginService.dart";
+import "package:provider/provider.dart";
 
 class Login extends StatefulWidget {
   @override
@@ -8,7 +10,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  // Controladores para los campos de texto
+  /// Controladores para los campos de texto
   final TextEditingController _correoController = TextEditingController(
     text: "jorgehbarrado@gmail.com",
   );
@@ -104,6 +106,10 @@ class _LoginState extends State<Login> {
     String correo = _correoController.text.trim();
     String contrasena = _contrasenaController.text.trim();
     String confirmarContrasena = _confirmarContrasenaController.text.trim();
+    final personaProvider = Provider.of<PersonaProvider>(
+      context,
+      listen: false,
+    );
 
     if (validarRegistro(nombre, correo, contrasena, confirmarContrasena)) {
       Usuario usuario = Usuario(
@@ -113,7 +119,9 @@ class _LoginState extends State<Login> {
       );
 
       try {
-        int estadoRegistro = await Loginservice().registro(usuario);
+        int estadoRegistro = await Loginservice(
+          personaProvider,
+        ).registro(usuario);
 
         if (estadoRegistro == 0) {
           Navigator.pushNamed(context, "/principal");
@@ -163,6 +171,10 @@ class _LoginState extends State<Login> {
   void login() async {
     String correo = _correoController.text.trim();
     String contrasena = _contrasenaController.text.trim();
+    final personaProvider = Provider.of<PersonaProvider>(
+      context,
+      listen: false,
+    );
 
     if (correo.isEmpty || contrasena.isEmpty) {
       print("Faltan datos");
@@ -175,9 +187,11 @@ class _LoginState extends State<Login> {
     );
 
     try {
-      int estadoLogin = await Loginservice().login(usuario);
+      //print("Llamando al servicio de login...");
+      int estadoLogin = await Loginservice(personaProvider).login(usuario);
 
       if (estadoLogin == 0) {
+        print("iniciado sesion");
         Navigator.pushNamed(context, "/principal");
       } else if (estadoLogin == 1) {
         print("Error en la contraseña o @");
@@ -185,7 +199,7 @@ class _LoginState extends State<Login> {
         print("Error desconocido");
       }
     } catch (e) {
-      print(e);
+      print("Excepción capturada: $e");
     }
   }
 }

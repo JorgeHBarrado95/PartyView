@@ -1,9 +1,11 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
 import 'package:party_view/models/Sala.dart';
+import 'package:party_view/provider/PersonaProvider.dart';
 import 'package:party_view/services/AuthService.dart';
 import 'package:party_view/services/GestorSalasService.dart';
-import 'package:party_view/widget/CustomListView.dart';
+import 'package:party_view/widget/ListViewSala.dart';
+import 'package:provider/provider.dart';
 
 class Principal extends StatefulWidget {
   Principal({super.key});
@@ -23,6 +25,11 @@ class _PrincipalState extends State<Principal> {
 
   @override
   Widget build(BuildContext context) {
+    // final personaProvider = Provider.of<PersonaProvider>(
+    //   context,
+    //   listen: false,
+    // );
+    // print(personaProvider.getPersona.toString());
     return Scaffold(
       body: Stack(
         children: [
@@ -38,9 +45,7 @@ class _PrincipalState extends State<Principal> {
                   } else if (snapshot.hasError) {
                     return Center(child: Text("Error al cargar las salas"));
                   } else {
-                    return Expanded(
-                      child: CustomListView(salas: snapshot.data!),
-                    );
+                    return Expanded(child: ListViewSala(salas: snapshot.data!));
                   }
                 },
               ),
@@ -64,8 +69,13 @@ class _PrincipalState extends State<Principal> {
                 ),
                 SizedBox(height: 16),
                 FloatingActionButton(
+                  //Crear sala
                   onPressed: () {
-                    Navigator.pushNamed(context, "/cineAnfitrion");
+                    Navigator.pushNamed(
+                      context,
+                      "/salaEspera",
+                      arguments: {"sala": null, "esAnfitrion": true},
+                    );
                   },
                   child: Icon(Icons.add),
                   heroTag: "add",

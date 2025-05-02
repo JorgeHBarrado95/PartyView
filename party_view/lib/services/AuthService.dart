@@ -1,3 +1,5 @@
+import 'package:party_view/models/Sala.dart';
+
 class Authservice {
   static final Authservice _instance = Authservice._internal();
 
@@ -35,4 +37,5 @@ class Authservice {
   void clearDisplayName() {
     _displayName = null;
   }
+
 }

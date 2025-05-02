@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:party_view/screens/CineAnfitrion.dart';
-import 'package:party_view/screens/CineUsuario.dart';
+import 'package:party_view/provider/SalaProvider.dart';
+import 'package:party_view/provider/PersonaProvider.dart';
+import 'package:party_view/screens/SalaEspera.dart';
 import 'package:party_view/screens/Login.dart';
 import 'package:party_view/screens/Principal.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => SalaProvider()),
+        ChangeNotifierProvider(create: (_) => PersonaProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -17,8 +27,7 @@ class MyApp extends StatelessWidget {
       routes: {
         "/login": (context) => Login(),
         "/principal": (context) => Principal(),
-        "/cineAnfitrion": (context) => CineAnfitrion(),
-        "/cineUsuario": (context) => CineUsuario(),
+        "/salaEspera": (context) => SalaEspera(),
       },
     );
   }
