@@ -99,7 +99,7 @@ class Body extends StatelessWidget {
     return Center(
       child: Container(
         child: Column(
-          children: [MenuArriba(), SizedBox(height: 20), ListaInvitados(esAnfitrion: esAnfitrion)],
+          children: [MenuArriba(esAnfitrion: esAnfitrion), SizedBox(height: 20), ListaInvitados(esAnfitrion: esAnfitrion)],
         ),
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
@@ -146,7 +146,9 @@ class ListaInvitados extends StatelessWidget {
 
 ///El [menuArriba] es el menu de la parte superior de la pantalla donde aparece el id, la capacidad y el estado de la sala.
 class MenuArriba extends StatefulWidget {
-  const MenuArriba({super.key});
+  const MenuArriba({super.key, required this.esAnfitrion});
+
+  final bool esAnfitrion;
 
   @override
   _MenuArribaState createState() => _MenuArribaState();
@@ -161,12 +163,6 @@ class _MenuArribaState extends State<MenuArriba> {
   Widget build(BuildContext context) {
     final _salaProvider = Provider.of<SalaProvider>(context);
     final _sala = _salaProvider.sala;
-
-    final Object? args = ModalRoute.of(context)!.settings.arguments;
-    final bool esAnfitrion =
-        (args is bool) ? args : false; // Valor predeterminado: false
-
-    ///Si la screen fue abierta por el anfitrion, entonces es true.
 
     return Container(
       child: Column(
@@ -190,12 +186,10 @@ class _MenuArribaState extends State<MenuArriba> {
                     }
                   }(), style: TextStyle(fontSize: 16)),
                   SizedBox(width: 10),
-                  if (esAnfitrion)
+                  if (widget.esAnfitrion) //Se pone widget para acceder a la variable de la clase padre
                     ElevatedButton(
-                      /// Botón para aumentar la capacidad
                       onPressed: () {
                         _salaProvider.incrementarCapacidad();
-                        print("Incrementar capacidad");
                       },
                       style: ElevatedButton.styleFrom(
                         shape: CircleBorder(),
@@ -203,12 +197,10 @@ class _MenuArribaState extends State<MenuArriba> {
                       ),
                       child: Icon(Icons.add, size: 20),
                     ),
-                  if (esAnfitrion) //Pongo aqui otro if porq al darle cntr + s me lo saca del if
+                  if (widget.esAnfitrion)
                     ElevatedButton(
-                      /// Botón para disminuir la capacidad
                       onPressed: () {
                         _salaProvider.disminuirCapacidad();
-                        print("Reducir capacidad");
                       },
                       style: ElevatedButton.styleFrom(
                         shape: CircleBorder(),
@@ -228,22 +220,20 @@ class _MenuArribaState extends State<MenuArriba> {
               SizedBox(width: 15),
               DropdownButton<String>(
                 value: _selectedEstado,
-                items:
-                    _estados.map((String estado) {
-                      return DropdownMenuItem<String>(
-                        value: estado,
-                        child: Text(estado),
-                      );
-                    }).toList(),
-                onChanged:
-                    esAnfitrion
-                        ? (String? newValue) {
-                          setState(() {
-                            _selectedEstado = newValue!;
-                            _salaProvider.estado(_selectedEstado);
-                          });
-                        }
-                        : null,
+                items: _estados.map((String estado) {
+                  return DropdownMenuItem<String>(
+                    value: estado,
+                    child: Text(estado),
+                  );
+                }).toList(),
+                onChanged: widget.esAnfitrion
+                    ? (String? newValue) {
+                        setState(() {
+                          _selectedEstado = newValue!;
+                          _salaProvider.estado(_selectedEstado);
+                        });
+                      }
+                    : null,
               ),
             ],
           ),
