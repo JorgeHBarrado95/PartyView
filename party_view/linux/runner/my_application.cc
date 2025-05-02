@@ -47,6 +47,9 @@ static void my_application_activate(GApplication* application) {
     gtk_window_set_title(window, "Party View");
   }
 
+  // Cambiar la ruta del ícono para apuntar al ícono generado en el directorio de salida
+  gtk_window_set_icon_from_file(window, "share/icons/hicolor/256x256/apps/party_view.png", nullptr);
+
   gtk_window_set_default_size(window, 1280, 720);
   gtk_widget_show(GTK_WIDGET(window));
 
