@@ -77,11 +77,28 @@ class _SalaEsperaState extends State<SalaEspera> {
     ///Boton de salida
     return Scaffold(
       body: Body(esAnfitrion: _esAnfitrion),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: Icon(Icons.arrow_back),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Icon(Icons.arrow_back),
+          ),
+          SizedBox(height: 10),
+          if (_esAnfitrion)
+            FloatingActionButton(
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  "/reproduccion",
+                  arguments: {"esAnfitrion": true},
+                );
+              },
+              child: Icon(Icons.play_arrow),
+            ),
+        ],
       ),
     );
   }
