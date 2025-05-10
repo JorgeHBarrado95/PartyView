@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:party_view/utils/registroValidacion.dart';
 
 class RegistroScreen extends StatelessWidget {
+  final TextEditingController campoNombre = TextEditingController();
+  final TextEditingController campoEmail = TextEditingController();
+  final TextEditingController campoContrasena = TextEditingController();
+  final TextEditingController campoConfirmarContrasena = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    Registrovalidacion _registroValidacion = Registrovalidacion();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -22,6 +29,7 @@ class RegistroScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 40),
                 TextField(
+                  controller: campoNombre,
                   decoration: InputDecoration(
                     labelText: "Nombre de usuario",
                     labelStyle: TextStyle(color: Colors.deepPurple),
@@ -36,6 +44,7 @@ class RegistroScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 TextField(
+                  controller: campoEmail,
                   decoration: InputDecoration(
                     labelText: "Correo electrónico",
                     labelStyle: TextStyle(color: Colors.deepPurple),
@@ -51,6 +60,7 @@ class RegistroScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 TextField(
+                  controller: campoContrasena,
                   decoration: InputDecoration(
                     labelText: "Contraseña",
                     labelStyle: TextStyle(color: Colors.deepPurple),
@@ -66,6 +76,7 @@ class RegistroScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 TextField(
+                  controller: campoConfirmarContrasena,
                   decoration: InputDecoration(
                     labelText: "Confirmar contraseña",
                     labelStyle: TextStyle(color: Colors.deepPurple),
@@ -82,7 +93,11 @@ class RegistroScreen extends StatelessWidget {
                 SizedBox(height: 30),
                 ElevatedButton(
                   onPressed: () {
-                    // Acción para registrar al usuario
+                    String nombre = campoNombre.text;
+                    String email = campoEmail.text;
+                    String contrasena = campoContrasena.text;
+                    String confirmarContrasena = campoConfirmarContrasena.text;
+                    _registroValidacion.registro(context, nombre, email, contrasena, confirmarContrasena);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple,
