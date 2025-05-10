@@ -99,7 +99,7 @@ class RegistroScreen extends StatelessWidget {
                 SizedBox(height: 15),
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, "login");
+                    Navigator.pushNamed(context, "/login");
                   },
                   child: Text(
                     "¿Ya tienes cuenta? Inicia sesión",
